@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<doc xmlns="http://www.ibm.com/iis/flow-doc">
+	<assets>
+		<asset class="$IIDR-Datastore" repr="CDC_Oracle_cdcdemoa" ID="ds1">
+			<attribute name="name" value="CDC_Oracle_cdcdemoa" />
+			<attribute name="short_description" value="InfoSphere CDC Oracle Redo DATABASE:CDCDEMOA" />
+			<attribute name="long_description" value="InfoSphere CDC Oracle Redo DATABASE:CDCDEMOA" />
+			<attribute name="$host" value="LINUX-ISCDC" />
+			<attribute name="$port" value="11001" />
+			<attribute name="$version" value="V11R3M3T2BIIDR_Release_19" />
+			<attribute name="$platform" value="Java VM" />
+			<attribute name="$database" value="Oracle" />
+			<attribute name="$type" value="Dual" />
+		</asset>
+		<asset class="$IIDR-Subscription" repr="SARC" ID="sub1">
+			<attribute name="name" value="SARC" />
+			<attribute name="short_description" value="" />
+			<attribute name="long_description" value="" />
+			<attribute name="$source_datastore" value="CDC_ORACLE_CDCDEMOA" />
+			<attribute name="$target_datastore" value="CDC_ORACLE_CDCDEMOA" />
+			<attribute name="$source_id" value="SARC" />
+			<attribute name="$tcp_host" value="AUTO SELECT" />
+			<attribute name="$firewall_port" value="" />
+			<attribute name="$persistency" value="false" />
+			<reference name="$Datastore" assetIDs="ds1" />
+		</asset>
+		<asset class="$IIDR-TableMapping" repr="CDCDEMOA.CUSTOMER - CDCDEMOA.CUST_AUD" ID="tm1">
+			<attribute name="name" value="CDCDEMOA.CUSTOMER - CDCDEMOA.CUST_AUD" />
+			<attribute name="short_description" value="Table mapping from CDCDEMOA.CUSTOMER to CDCDEMOA.CUST_AUD" />
+			<attribute name="long_description" value="Table mapping from CDCDEMOA.CUSTOMER to CDCDEMOA.CUST_AUD" />
+			<attribute name="$source" value="CDCDEMOA.CUSTOMER" />
+			<attribute name="$target" value="CDCDEMOA.CUST_AUD" />
+			<attribute name="$mapping_type" value="Audit" />
+			<attribute name="$method" value="Mirror" />
+			<attribute name="$prevent_recursion" value="false" />
+			<reference name="$Subscription" assetIDs="sub1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="CUSTNO - CUSTNO" ID="cm1">
+			<attribute name="name" value="CUSTNO - CUSTNO" />
+			<attribute name="short_description" value="Column mapping from CUSTNO CUSTNO" />
+			<attribute name="long_description" value="Column mapping from CUSTNO CUSTNO" />
+			<attribute name="$source_column" value="CUSTNO" />
+			<attribute name="$target_column" value="CUSTNO" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="BRANCH - BRANCH" ID="cm2">
+			<attribute name="name" value="BRANCH - BRANCH" />
+			<attribute name="short_description" value="Column mapping from BRANCH BRANCH" />
+			<attribute name="long_description" value="Column mapping from BRANCH BRANCH" />
+			<attribute name="$source_column" value="BRANCH" />
+			<attribute name="$target_column" value="BRANCH" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="NAME1 - NAME1" ID="cm3">
+			<attribute name="name" value="NAME1 - NAME1" />
+			<attribute name="short_description" value="Column mapping from NAME1 NAME1" />
+			<attribute name="long_description" value="Column mapping from NAME1 NAME1" />
+			<attribute name="$source_column" value="NAME1" />
+			<attribute name="$target_column" value="NAME1" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="NAME2 - NAME2" ID="cm4">
+			<attribute name="name" value="NAME2 - NAME2" />
+			<attribute name="short_description" value="Column mapping from NAME2 NAME2" />
+			<attribute name="long_description" value="Column mapping from NAME2 NAME2" />
+			<attribute name="$source_column" value="NAME2" />
+			<attribute name="$target_column" value="NAME2" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="ADDRESS1 - ADDRESS1" ID="cm5">
+			<attribute name="name" value="ADDRESS1 - ADDRESS1" />
+			<attribute name="short_description" value="Column mapping from ADDRESS1 ADDRESS1" />
+			<attribute name="long_description" value="Column mapping from ADDRESS1 ADDRESS1" />
+			<attribute name="$source_column" value="ADDRESS1" />
+			<attribute name="$target_column" value="ADDRESS1" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="ADDRESS2 - ADDRESS2" ID="cm6">
+			<attribute name="name" value="ADDRESS2 - ADDRESS2" />
+			<attribute name="short_description" value="Column mapping from ADDRESS2 ADDRESS2" />
+			<attribute name="long_description" value="Column mapping from ADDRESS2 ADDRESS2" />
+			<attribute name="$source_column" value="ADDRESS2" />
+			<attribute name="$target_column" value="ADDRESS2" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="CITY - CITY" ID="cm7">
+			<attribute name="name" value="CITY - CITY" />
+			<attribute name="short_description" value="Column mapping from CITY CITY" />
+			<attribute name="long_description" value="Column mapping from CITY CITY" />
+			<attribute name="$source_column" value="CITY" />
+			<attribute name="$target_column" value="CITY" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="STATE - STATE" ID="cm8">
+			<attribute name="name" value="STATE - STATE" />
+			<attribute name="short_description" value="Column mapping from STATE STATE" />
+			<attribute name="long_description" value="Column mapping from STATE STATE" />
+			<attribute name="$source_column" value="STATE" />
+			<attribute name="$target_column" value="STATE" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="STATUS - STATUS" ID="cm9">
+			<attribute name="name" value="STATUS - STATUS" />
+			<attribute name="short_description" value="Column mapping from STATUS STATUS" />
+			<attribute name="long_description" value="Column mapping from STATUS STATUS" />
+			<attribute name="$source_column" value="STATUS" />
+			<attribute name="$target_column" value="STATUS" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="CRLIMIT - CRLIMIT" ID="cm10">
+			<attribute name="name" value="CRLIMIT - CRLIMIT" />
+			<attribute name="short_description" value="Column mapping from CRLIMIT CRLIMIT" />
+			<attribute name="long_description" value="Column mapping from CRLIMIT CRLIMIT" />
+			<attribute name="$source_column" value="CRLIMIT" />
+			<attribute name="$target_column" value="CRLIMIT" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="BALANCE - BALANCE" ID="cm11">
+			<attribute name="name" value="BALANCE - BALANCE" />
+			<attribute name="short_description" value="Column mapping from BALANCE BALANCE" />
+			<attribute name="long_description" value="Column mapping from BALANCE BALANCE" />
+			<attribute name="$source_column" value="BALANCE" />
+			<attribute name="$target_column" value="BALANCE" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="REPNO - REPNO" ID="cm12">
+			<attribute name="name" value="REPNO - REPNO" />
+			<attribute name="short_description" value="Column mapping from REPNO REPNO" />
+			<attribute name="long_description" value="Column mapping from REPNO REPNO" />
+			<attribute name="$source_column" value="REPNO" />
+			<attribute name="$target_column" value="REPNO" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="BRANCH - AUD_USER" ID="cm13">
+			<attribute name="name" value="BRANCH - AUD_USER" />
+			<attribute name="short_description" value="Column mapping from BRANCH AUD_USER" />
+			<attribute name="long_description" value="Column mapping from BRANCH AUD_USER" />
+			<attribute name="$source_column" value="BRANCH" />
+			<attribute name="$target_column" value="AUD_USER" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="BRANCH - AUD_JOBUSER" ID="cm14">
+			<attribute name="name" value="BRANCH - AUD_JOBUSER" />
+			<attribute name="short_description" value="Column mapping from BRANCH AUD_JOBUSER" />
+			<attribute name="long_description" value="Column mapping from BRANCH AUD_JOBUSER" />
+			<attribute name="$source_column" value="BRANCH" />
+			<attribute name="$target_column" value="AUD_JOBUSER" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr=" - AUD_TIMESTAMP" ID="cm15">
+			<attribute name="name" value=" - AUD_TIMESTAMP" />
+			<attribute name="short_description" value="Column mapping from  AUD_TIMESTAMP" />
+			<attribute name="long_description" value="Column mapping from  AUD_TIMESTAMP" />
+			<attribute name="$source_column" value="" />
+			<attribute name="$target_column" value="AUD_TIMESTAMP" />
+			<attribute name="$initial_value" value="NULL" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="BRANCH - AUD_ENTTYP" ID="cm16">
+			<attribute name="name" value="BRANCH - AUD_ENTTYP" />
+			<attribute name="short_description" value="Column mapping from BRANCH AUD_ENTTYP" />
+			<attribute name="long_description" value="Column mapping from BRANCH AUD_ENTTYP" />
+			<attribute name="$source_column" value="BRANCH" />
+			<attribute name="$target_column" value="AUD_ENTTYP" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="CUSTNO - AUD_SCN" ID="cm17">
+			<attribute name="name" value="CUSTNO - AUD_SCN" />
+			<attribute name="short_description" value="Column mapping from CUSTNO AUD_SCN" />
+			<attribute name="long_description" value="Column mapping from CUSTNO AUD_SCN" />
+			<attribute name="$source_column" value="CUSTNO" />
+			<attribute name="$target_column" value="AUD_SCN" />
+			<attribute name="$initial_value" value="" />
+			<reference name="$TableMapping" assetIDs="tm1" />
+		</asset>
+	</assets>
+	<importAction partialAssetIDs="ds1 " />
+</doc>
