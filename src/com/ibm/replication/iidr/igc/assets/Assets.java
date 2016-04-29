@@ -118,7 +118,8 @@ public class Assets {
 	public TableMapping addTableToTableMapping(String source_schema, String source_table, String target_schema,
 			String target_table, String mapping_type, String method, String prevent_recursion, String parent_id) {
 		TableMapping returnTableMapping = null;
-		logger.debug("Adding table to table mapping for source table " + source_schema + "." + source_table);
+		logger.debug("Adding table to table mapping for source table " + source_schema + "." + source_table
+				+ " to target table " + target_schema + "." + target_table);
 		returnTableMapping = new TableMapping(getNextTableMappingID(), source_schema, source_table, target_schema,
 				target_table, mapping_type, method, prevent_recursion, parent_id);
 		tableMappings.add(returnTableMapping);
@@ -128,23 +129,40 @@ public class Assets {
 	public TableMapping addTableToFlatFileMapping(String source_schema, String source_table, String directory,
 			String mapping_type, String method, String prevent_recursion, String parent_id) {
 		TableMapping returnTableMapping = null;
-		logger.debug("Adding table to file mapping for source table " + source_schema + "." + source_table);
+		logger.debug("Adding table to file mapping for source table " + source_schema + "." + source_table
+				+ " to directory " + directory);
 		returnTableMapping = new TableMapping(getNextTableMappingID(), source_schema, source_table, directory,
 				mapping_type, method, prevent_recursion, parent_id);
 		tableMappings.add(returnTableMapping);
 		return returnTableMapping;
 	}
 
-	public void addColumnMapping(ColumnMapping columnMapping) {
-		this.columnMappings.add(columnMapping);
+	public ColumnMapping addColumnMapping(String source_column, String target_column, String initial_value,
+			String parent_id) {
+		ColumnMapping returnColumnMapping = null;
+		logger.debug("Adding source column " + source_column + " to target column " + target_column);
+		returnColumnMapping = new ColumnMapping(getNextColumnMappingID(), source_column, target_column, initial_value,
+				parent_id);
+		columnMappings.add(returnColumnMapping);
+		return returnColumnMapping;
 	}
 
-	public void addRuleSet(RuleSet ruleSet) {
-		this.ruleSets.add(ruleSet);
+	public RuleSet addRuleSet(String name, String schema, String include_tables, String exclude_tables,
+			String structure_only, String context, String parent_id) {
+		RuleSet returnRuleSet = null;
+		logger.debug("Adding rule set " + name);
+		returnRuleSet = new RuleSet(getNextRuleSetID(), name, schema, include_tables, exclude_tables, structure_only,
+				context, parent_id);
+		ruleSets.add(returnRuleSet);
+		return returnRuleSet;
 	}
 
-	public void addRSTableMapping(RSTableMapping rsTableMapping) {
-		this.rsTableMappings.add(rsTableMapping);
+	public RSTableMapping addRSTableMapping(String schema, String table, String structure_only, String parent_id) {
+		RSTableMapping returnRSTableMapping = null;
+		logger.debug("Adding rule set table mapping for schema " + schema + " and table " + table);
+		returnRSTableMapping = new RSTableMapping(getNextRSTableMappingID(), schema, table, structure_only, parent_id);
+		rsTableMappings.add(returnRSTableMapping);
+		return returnRSTableMapping;
 	}
 
 	public Datastore datastoreExists(String name) {
@@ -399,35 +417,6 @@ public class Assets {
 		}
 
 		return null;
-	}
-
-	public static void main(String[] args) {
-
-		Assets assets = new Assets();
-		Datastore ds = new Datastore(assets.getNextDatastoreID(), "TESTDB", "TESTDB DB2 database on troia", "troia",
-				"10901", "V11R3M3T0BCDD_BR_LSTYTHIK_96_7", "Java VM", "DB2 for LUW", "Dual");
-		Subscription sub = new Subscription(assets.getNextSubscriptionID(), "BLA", "Replicating customer data", "ORCL",
-				"TESTDB", "BLA", "Auto Select", "", "No", "ds1");
-		TableMapping tm = new TableMapping("tm1", "DISCOUNT", "TAB1", "NICE", "TAB2", "Standard", "Mirror", "No",
-				"sub1");
-		ColumnMapping cm = new ColumnMapping("cm1", "ALBUMID", "ALBUMID", "", "tm1");
-		RuleSet rs = new RuleSet("rs1", "A_TABLES", "TESTS", "A*", "", "No", "", "sub1");
-		RSTableMapping rstm = new RSTableMapping("rstm1", "DISCOUNT", "TAB1", "No", "sub1");
-
-		// assets.addDatastore(ds);
-		assets.addSubscription(sub);
-		assets.addTableMapping(tm);
-		assets.addColumnMapping(cm);
-		assets.addRuleSet(rs);
-		assets.addRSTableMapping(rstm);
-
-		System.out.println(assets.toXML());
-		System.out.println(assets.listDatastores());
-		System.out.println(assets.listSubscriptions());
-		System.out.println(assets.listTableMappings());
-		System.out.println(assets.listRuleSets());
-		System.out.println(assets.listColumnMappings());
-		System.out.println(assets.listRSTableMappings());
 	}
 
 }

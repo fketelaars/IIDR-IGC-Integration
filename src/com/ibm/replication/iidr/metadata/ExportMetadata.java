@@ -34,10 +34,7 @@ import org.apache.log4j.Logger;
 
 import com.ibm.replication.cdc.scripting.*;
 import com.ibm.replication.iidr.igc.assets.Assets;
-import com.ibm.replication.iidr.igc.assets.ColumnMapping;
 import com.ibm.replication.iidr.igc.assets.Datastore;
-import com.ibm.replication.iidr.igc.assets.RSTableMapping;
-import com.ibm.replication.iidr.igc.assets.RuleSet;
 import com.ibm.replication.iidr.igc.assets.Subscription;
 import com.ibm.replication.iidr.igc.assets.TableMapping;
 import com.ibm.replication.iidr.igc.flow.Flows;
@@ -47,13 +44,12 @@ import com.ibm.replication.iidr.igcrest.IGCRestException;
 public class ExportMetadata {
 
 	final static String VERSION = "1.0";
-	final static String BUILD = "300";
+	final static String BUILD = "500";
 
 	final static int ERR_DATASTORE_UNREACHABLE = -2225;
 	final static int ERR_DATASTORE_NOT_SUPPORTED = -2202;
 	final static int ERR_DATASTORES_NOT_SAME_TYPE = -2233;
 
-	final private static String MAPPING_TYPE_DATASTAGE = "Flat File";
 	final private static String DATASTORE_TYPE_DATASTAGE = "IBM InfoSphere DataStage";
 
 	final static Logger logger = Logger.getLogger("com.ibm.replication.iidr.metadata.ExportMetadata");
@@ -110,7 +106,7 @@ public class ExportMetadata {
 
 	}
 
-	private void collectMetadata() {
+	private void collectMetadata() throws EmbeddedScriptException, ExportMetadataException {
 
 		script = new EmbeddedScript();
 
@@ -121,338 +117,44 @@ public class ExportMetadata {
 
 			// Connect to Access Server
 			logger.info("Connecting to Access Server");
-			script.execute(MessageFormat.format(
-					"connect server hostname {0} port {1,number,#} username {2} password {3}",
-					new Object[] { settings.asHostName, settings.asPort, settings.asUserName, settings.asPassword }));
-			if (script.getResultCode() == 0) {
+			try {
+				script.execute(MessageFormat.format(
+						"connect server hostname {0} port {1,number,#} username {2} password {3}", new Object[] {
+								settings.asHostName, settings.asPort, settings.asUserName, settings.asPassword }));
 				// Connect to source datastore
 				logger.debug("Connecting to source datastore " + parms.datastore);
-				script.execute(MessageFormat.format("connect datastore name {0} context source",
-						new Object[] { parms.datastore }));
-				// Get source datastore parameters and store in asset object
-				if (script.getResultCode() == 0) {
+				try {
+					script.execute(MessageFormat.format("connect datastore name {0} context source",
+							new Object[] { parms.datastore }));
+					// Get source datastore parameters and store in asset object
 					logger.debug("Getting attributes for source datastore " + parms.datastore);
 					Datastore sourceDatastore = addDatastoreToAssets(parms.datastore);
 					// Now process the specified (or all) subscriptions
 					collectSubscriptions(sourceDatastore);
-				} else
-					throw new ExportMetadataException("Error connecting to datastore " + parms.datastore);
-			} else
-				throw new ExportMetadataException("Error connecting to Access Server");
-
-			for (int tableRow = 0; tableRow < datastoresTable.getRowCount(); tableRow++) {
-
-				if (datastoresTable.getValueAt(tableRow, "TYPE").equals("Target")) {
-					continue;
-				}
-
-				String currentSourceDatastore = datastoresTable.getValueAt(tableRow, "DATASTORE");
-
-				if (!parms.datastore.isEmpty() && !parms.datastore.equalsIgnoreCase(currentSourceDatastore)) {
-					continue;
-				}
-
-				try {
-
-					// Fetch data on source datastore
-
-					// Gather info about datastore and create an asset
-					ResultStringKeyValues datastoreTable = (ResultStringKeyValues) script.getResult();
-
-					String currentDatastoreID = "";
-
-					Datastore currDatastore = assets.datastoreExists(currentSourceDatastore);
-
-					if (currDatastore == null) {
-						currDatastore = new Datastore(assets.getNextDatastoreID(), datastoreTable.getValue("Name"),
-								datastoreTable.getValue("Description"), datastoreTable.getValue("Host Name"),
-								datastoreTable.getValue("Port"), datastoreTable.getValue("Version"),
-								datastoreTable.getValue("Platform"), datastoreTable.getValue("Database"),
-								datastoreTable.getValue("Type"));
-
-						assets.addDatastore(currDatastore);
-
-						currentDatastoreID = currDatastore.getID();
-
-					} else {
-						currentDatastoreID = currDatastore.getID();
-					}
-
-					// Connect to source datastore
-					logger.info("Listing subscriptions of the datastore " + currentSourceDatastore);
-					// script.execute(MessageFormat.format("list subscriptions
-					// filter datastore name {0}",
-					// new Object[] {currentSourceDatastore}));
-					script.execute("list subscriptions");
-
-					ResultStringTable subscriptionsTable = (ResultStringTable) script.getResult();
-
-					// For every directly mapped table, list the column mappings
-					for (int subTableRow = 0; subTableRow < subscriptionsTable.getRowCount(); subTableRow++) {
-
-						String subscriptionName = subscriptionsTable.getValueAt(subTableRow, "SUBSCRIPTION");
-
-						if (!parms.datastore.isEmpty() && !parms.subscription.isEmpty()
-								&& !parms.subscription.equalsIgnoreCase(subscriptionName)) {
-							continue;
-						}
-
-						String subSourceDatastore = subscriptionsTable.getValueAt(subTableRow, "SOURCE DATASTORE");
-
-						if (!subSourceDatastore.equalsIgnoreCase(currentSourceDatastore)) {
-							continue;
-						}
-
-						if (!assets.subscriptionExists(subscriptionName, subSourceDatastore)) {
-							logger.info("\tGetting attributes for subscription " + subscriptionName);
-							script.execute(MessageFormat.format("show subscription name {0}",
-									new Object[] { subscriptionName }));
-
-							ResultStringKeyValues subscriptionTable = (ResultStringKeyValues) script.getResult();
-
-							Subscription currSubscription = new Subscription(assets.getNextSubscriptionID(),
-									subscriptionTable.getValue("Name"), subscriptionTable.getValue("Description"),
-									subscriptionTable.getValue("Source Datastore"),
-									subscriptionTable.getValue("Target Datastore"),
-									subscriptionTable.getValue("Source ID"), subscriptionTable.getValue("TCP Host"),
-									subscriptionTable.getValue("Firewall Port"),
-									subscriptionTable.getValue("Persistency"), currentDatastoreID);
-
-							String currTargetDatastore = subscriptionTable.getValue("Target Datastore");
-
-							boolean targetConnected = true;
-
-							String targetDatastoreID = currentDatastoreID;
-
-							if (currTargetDatastore.startsWith("External")) {
-								targetConnected = false;
-							} else if (!currentSourceDatastore.equalsIgnoreCase(currTargetDatastore)) {
-
-								try {
-									// Connect to target datastore
-									logger.debug("\t\tFetching info for target datastore " + currTargetDatastore);
-									script.execute(MessageFormat.format("connect datastore name {0} context target",
-											new Object[] { currTargetDatastore }));
-
-									// Fetch data on target datastore
-									script.execute(MessageFormat.format("show datastore name {0}",
-											new Object[] { currTargetDatastore }));
-
-									// Gather info about datastore and create an
-									// asset
-									datastoreTable = (ResultStringKeyValues) script.getResult();
-
-									Datastore foundTargetDatastore = assets.datastoreExists(currTargetDatastore);
-
-									if (foundTargetDatastore == null) {
-
-										foundTargetDatastore = new Datastore(assets.getNextDatastoreID(),
-												datastoreTable.getValue("Name"), datastoreTable.getValue("Description"),
-												datastoreTable.getValue("Host Name"), datastoreTable.getValue("Port"),
-												datastoreTable.getValue("Version"), datastoreTable.getValue("Platform"),
-												datastoreTable.getValue("Database"), datastoreTable.getValue("Type"));
-
-										assets.addDatastore(foundTargetDatastore);
-
-									}
-
-									targetDatastoreID = foundTargetDatastore.getID();
-
-									targetConnected = true;
-
-								} catch (EmbeddedScriptException e) {
-
-									switch (e.getResultCode()) {
-									case ERR_DATASTORE_UNREACHABLE:
-										logger.info("The target datastore unreachable");
-										targetConnected = false;
-										break;
-									case ERR_DATASTORE_NOT_SUPPORTED:
-										logger.info("The target datastore not supported");
-										targetConnected = false;
-										break;
-									default:
-										throw e;
-									}
-
-								}
-
-							}
-
-							if (targetConnected) {
-
-								// List the direct table mappings for the
-								// selected subscription
-								logger.info("\t\tGetting directly mapped tables");
-
-								script.execute(MessageFormat.format("list table mappings name {0}",
-										new Object[] { currSubscription.getName() }));
-								ResultStringTable mappingsTables = (ResultStringTable) script.getResult();
-
-								currSubscription.setTargetDatastoreID(targetDatastoreID);
-
-								assets.addSubscription(currSubscription);
-
-								script.execute(MessageFormat.format("select subscription name {0}",
-										new Object[] { currSubscription.getName() }));
-
-								for (int tmTableRow = 0; tmTableRow < mappingsTables.getRowCount(); tmTableRow++) {
-
-									TableMapping currTableMapping;
-
-									if (mappingsTables.getValueAt(tmTableRow, "MAPPING TYPE")
-											.equalsIgnoreCase(MAPPING_TYPE_DATASTAGE)) {
-
-										logger.debug("\t\tSelecting table mapping of "
-												+ mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE"));
-										script.execute(MessageFormat
-												.format("select table mapping sourceSchema {0} sourceTable {1}",
-														new Object[] {
-																Utils.getSchema(mappingsTables.getValueAt(tmTableRow,
-																		"SOURCE TABLE")),
-																Utils.getTable(mappingsTables.getValueAt(tmTableRow,
-																		"SOURCE TABLE")) }));
-
-										// Fetch data on target datastore
-										logger.debug("\t\tFetching table mapping info for table "
-												+ mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE"));
-
-										script.execute("show table mapping");
-
-										ResultStringKeyValues flatFileTarget = (ResultStringKeyValues) script
-												.getResult();
-
-										currTableMapping = new TableMapping(assets.getNextTableMappingID(),
-												Utils.getSchema(mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE")),
-												Utils.getTable(mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE")),
-												flatFileTarget.getValue("Directory"),
-												mappingsTables.getValueAt(tmTableRow, "MAPPING TYPE"),
-												mappingsTables.getValueAt(tmTableRow, "METHOD"),
-												mappingsTables.getValueAt(tmTableRow, "PREVENT RECURSION"),
-												currSubscription.getID());
-									} else {
-										currTableMapping = new TableMapping(assets.getNextTableMappingID(),
-												Utils.getSchema(mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE")),
-												Utils.getTable(mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE")),
-												Utils.getSchema(mappingsTables.getValueAt(tmTableRow, "TARGET TABLE")),
-												Utils.getTable(mappingsTables.getValueAt(tmTableRow, "TARGET TABLE")),
-												mappingsTables.getValueAt(tmTableRow, "MAPPING TYPE"),
-												mappingsTables.getValueAt(tmTableRow, "METHOD"),
-												mappingsTables.getValueAt(tmTableRow, "PREVENT RECURSION"),
-												currSubscription.getID());
-
-										logger.debug("\t\tSelecting table mapping of " + currTableMapping);
-										script.execute(MessageFormat.format(
-												"select table mapping sourceSchema {0} sourceTable {1} targetSchema {2} targetTable {3}",
-												new Object[] { currTableMapping.getSourceSchema(),
-														currTableMapping.getSourceTable(),
-														currTableMapping.getTargetSchema(),
-														currTableMapping.getTargetTable() }));
-
-										logger.debug("\t\tFetching columns for table mapping of " + currTableMapping);
-										script.execute("list column mappings");
-
-										ResultStringTable tableColumns = (ResultStringTable) script.getResult();
-										for (int columnRow = 0; columnRow < tableColumns.getRowCount(); columnRow++) {
-
-											ColumnMapping columnMapping = new ColumnMapping(
-													assets.getNextColumnMappingID(),
-													tableColumns.getValueAt(columnRow, "SOURCE"),
-													tableColumns.getValueAt(columnRow, "TARGET COLUMN"),
-													tableColumns.getValueAt(columnRow, "INITIAL VALUE"),
-													currTableMapping.getID());
-
-											assets.addColumnMapping(columnMapping);
-										}
-									}
-
-									assets.addTableMapping(currTableMapping);
-
-								}
-
-								try {
-
-									// Listing rule sets
-									logger.info("\t\tGetting rule sets");
-									script.execute("list rule sets");
-									ResultStringTable ruleSets = (ResultStringTable) script.getResult();
-
-									for (int rsTableRow = 0; rsTableRow < ruleSets.getRowCount(); rsTableRow++) {
-
-										RuleSet ruleSet = new RuleSet(assets.getNextRuleSetID(),
-												ruleSets.getValueAt(rsTableRow, "RULE SET NAME"),
-												ruleSets.getValueAt(rsTableRow, "SCHEMA"),
-												ruleSets.getValueAt(rsTableRow, "INCLUDE TABLES"),
-												ruleSets.getValueAt(rsTableRow, "EXCLUDE TABLES"),
-												ruleSets.getValueAt(rsTableRow, "STRUCTURE ONLY"),
-												ruleSets.getValueAt(rsTableRow, "CONTEXT"), currSubscription.getID());
-
-										assets.addRuleSet(ruleSet);
-									}
-
-									// Listing rule set tables
-									script.execute("list rule set tables");
-
-									ResultStringTable ruleSetTables = (ResultStringTable) script.getResult();
-									for (int rsTableRow = 0; rsTableRow < ruleSetTables.getRowCount(); rsTableRow++) {
-
-										RSTableMapping rsTableMapping = new RSTableMapping(
-												assets.getNextRSTableMappingID(),
-												ruleSetTables.getValueAt(rsTableRow, "SCHEMA"),
-												ruleSetTables.getValueAt(rsTableRow, "TABLE NAME"),
-												ruleSetTables.getValueAt(rsTableRow, "STRUCTURE ONLY"),
-												currSubscription.getID());
-
-										assets.addRSTableMapping(rsTableMapping);
-									}
-
-								} catch (EmbeddedScriptException e) {
-
-									switch (e.getResultCode()) {
-									case ERR_DATASTORES_NOT_SAME_TYPE:
-										logger.debug("\t\tRules set mappings not found");
-										break;
-									default:
-										throw e;
-									}
-
-								}
-
-								if (!currentSourceDatastore.equalsIgnoreCase(currTargetDatastore)) {
-									logger.debug("\t\tDisconnecting from target datastore " + currTargetDatastore);
-									script.execute(MessageFormat.format("disconnect datastore name {0}",
-											new Object[] { currTargetDatastore }));
-								}
-							}
-						}
-					}
-
-					logger.debug("Disconnecting from source datastore " + currentSourceDatastore);
-					script.execute(MessageFormat.format("disconnect datastore name {0}",
-							new Object[] { currentSourceDatastore }));
-
 				} catch (EmbeddedScriptException e) {
-
-					switch (e.getResultCode()) {
-					case ERR_DATASTORE_UNREACHABLE:
-						logger.info("The datastore unreachable");
-						break;
-					case ERR_DATASTORE_NOT_SUPPORTED:
-						logger.info("The datastore not supported");
-						break;
-					default:
-						throw e;
-					}
-
+					throw new ExportMetadataException(
+							"Error connecting to datastore " + parms.datastore + ": " + script.getResultMessage());
 				}
-
+			} catch (EmbeddedScriptException e) {
+				throw new ExportMetadataException("Error connecting to Access Server: " + e.getMessage());
 			}
 
+			logger.debug("Disconnecting from source datastore " + parms.datastore);
+			script.execute(MessageFormat.format("disconnect datastore name {0}", new Object[] { parms.datastore }));
+
 		} catch (EmbeddedScriptException e) {
-			logger.error(e.getResultCodeAndMessage());
-		} finally {
-			logger.info("Closing connection to Access Server");
-			script.close();
+
+			switch (e.getResultCode()) {
+			case ERR_DATASTORE_UNREACHABLE:
+				logger.info("The datastore unreachable");
+				break;
+			case ERR_DATASTORE_NOT_SUPPORTED:
+				logger.info("The datastore not supported");
+				break;
+			default:
+				throw e;
+			}
+
 		}
 
 	}
@@ -482,7 +184,7 @@ public class ExportMetadata {
 				subscriptionNames.add(subscriptionsTable.getValueAt(tableRow, "SUBSCRIPTION"));
 			}
 		} else {
-			subscriptionNames = (ArrayList<String>) Arrays.asList(parms.subscription.split(","));
+			subscriptionNames = new ArrayList<String>(Arrays.asList(parms.subscription.split(",")));
 		}
 		// Now get details for all selected subscriptions
 		for (String subscriptionName : subscriptionNames) {
@@ -510,7 +212,7 @@ public class ExportMetadata {
 						sourceDatastore);
 			} catch (EmbeddedScriptException e) {
 				logger.warn("Error while retrieving details for subscription " + subscriptionName
-						+ ". Subscription is ignored. Error: " + e.getMessage());
+						+ ". Subscription is ignored. Error: " + script.getResultMessage());
 			}
 		}
 		// Once all subscriptions have been retrieved, list the table mappings
@@ -521,7 +223,8 @@ public class ExportMetadata {
 
 	private void collectTableMappings(Subscription subscription) throws EmbeddedScriptException {
 		script.execute(MessageFormat.format("select subscription name {0}", new Object[] { subscription.getName() }));
-		// If the target datastore is InfoSphere DataStage
+		// If the target datastore is InfoSphere DataStage, add table assets
+		// targeting flat files
 		if (assets.getDatastore(subscription.getTargetDatastoreID()).getDatabase().equals(DATASTORE_TYPE_DATASTAGE)) {
 			logger.debug("Collecing DataStage table mappings for subscription " + subscription.getName());
 			script.execute(
@@ -533,17 +236,15 @@ public class ExportMetadata {
 								Utils.getTable(mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE")) }));
 				script.execute("show table mapping");
 				ResultStringKeyValues flatFileTarget = (ResultStringKeyValues) script.getResult();
-				assets.addTableToTableMapping(Utils.getSchema(mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE")),
+				assets.addTableToFlatFileMapping(Utils.getSchema(mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE")),
 						Utils.getTable(mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE")),
-						Utils.getSchema(mappingsTables.getValueAt(tmTableRow, "TARGET TABLE")),
-						Utils.getTable(mappingsTables.getValueAt(tmTableRow, "TARGET TABLE")),
-						mappingsTables.getValueAt(tmTableRow, "MAPPING TYPE"),
+						flatFileTarget.getValue("Directory"), mappingsTables.getValueAt(tmTableRow, "MAPPING TYPE"),
 						mappingsTables.getValueAt(tmTableRow, "METHOD"),
 						mappingsTables.getValueAt(tmTableRow, "PREVENT RECURSION"), subscription.getID());
 			}
-			// If the target datastore is a database
+			// If the target datastore is a database, add table to table assets
 		} else {
-			logger.debug("Collecing database table mappings for subscription " + subscription.getName());
+			logger.debug("Colletcing database table mappings for subscription " + subscription.getName());
 			script.execute(
 					MessageFormat.format("list table mappings name {0}", new Object[] { subscription.getName() }));
 			ResultStringTable mappingsTables = (ResultStringTable) script.getResult();
@@ -551,22 +252,65 @@ public class ExportMetadata {
 				script.execute(MessageFormat.format("select table mapping sourceSchema {0} sourceTable {1}",
 						new Object[] { Utils.getSchema(mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE")),
 								Utils.getTable(mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE")) }));
-				script.execute("show table mapping");
-				ResultStringKeyValues flatFileTarget = (ResultStringKeyValues) script.getResult();
-				assets.addTableToTableMapping(Utils.getSchema(mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE")),
+				TableMapping tableMapping = assets.addTableToTableMapping(
+						Utils.getSchema(mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE")),
 						Utils.getTable(mappingsTables.getValueAt(tmTableRow, "SOURCE TABLE")),
 						Utils.getSchema(mappingsTables.getValueAt(tmTableRow, "TARGET TABLE")),
 						Utils.getTable(mappingsTables.getValueAt(tmTableRow, "TARGET TABLE")),
 						mappingsTables.getValueAt(tmTableRow, "MAPPING TYPE"),
 						mappingsTables.getValueAt(tmTableRow, "METHOD"),
 						mappingsTables.getValueAt(tmTableRow, "PREVENT RECURSION"), subscription.getID());
+				// Now that the table asset has been added, also add the column
+				// assets
+				collectColumnMappings(tableMapping);
 			}
-
+			// Collect Rule Set mappings for subscriptions
+			collectRSMappings(subscription);
 		}
 	}
 
-	public static void main(String[] args) throws ConfigurationException, ExportMetadataParmsException,
-			EmbeddedScriptException, ExportMetadataException {
+	private void collectRSMappings(Subscription subscription) throws EmbeddedScriptException {
+		script.execute(MessageFormat.format("select subscription name {0}", new Object[] { subscription.getName() }));
+		// Listing rule sets
+		logger.info("Getting rule sets for subscription " + subscription.getName());
+		ResultStringTable ruleSets = (ResultStringTable) script.getResult();
+		for (int rsTableRow = 0; rsTableRow < ruleSets.getRowCount(); rsTableRow++) {
+			assets.addRuleSet(ruleSets.getValueAt(rsTableRow, "RULE SET NAME"),
+					ruleSets.getValueAt(rsTableRow, "SCHEMA"), ruleSets.getValueAt(rsTableRow, "INCLUDE TABLES"),
+					ruleSets.getValueAt(rsTableRow, "EXCLUDE TABLES"),
+					ruleSets.getValueAt(rsTableRow, "STRUCTURE ONLY"), ruleSets.getValueAt(rsTableRow, "CONTEXT"),
+					subscription.getID());
+		}
+		// Listing rule set tables
+		logger.info("Listing rule set tables for subscription " + subscription.getName());
+		ResultStringTable ruleSetTables = (ResultStringTable) script.getResult();
+		for (int rsTableRow = 0; rsTableRow < ruleSetTables.getRowCount(); rsTableRow++) {
+			assets.addRSTableMapping(ruleSetTables.getValueAt(rsTableRow, "SCHEMA"),
+					ruleSetTables.getValueAt(rsTableRow, "TABLE NAME"),
+					ruleSetTables.getValueAt(rsTableRow, "STRUCTURE ONLY"), subscription.getID());
+		}
+	}
+
+	private void collectColumnMappings(TableMapping tableMapping) throws EmbeddedScriptException {
+		logger.debug("Adding column mappings for table " + tableMapping.getSourceSchema() + "."
+				+ tableMapping.getSourceTable());
+		script.execute(MessageFormat.format(
+				"select table mapping sourceSchema {0} sourceTable {1} targetSchema {2} targetTable {3}",
+				new Object[] { tableMapping.getSourceSchema(), tableMapping.getSourceTable(),
+						tableMapping.getTargetSchema(), tableMapping.getTargetTable() }));
+
+		logger.debug("Listing column mappings for table");
+		script.execute("list column mappings");
+
+		ResultStringTable tableColumns = (ResultStringTable) script.getResult();
+		for (int columnRow = 0; columnRow < tableColumns.getRowCount(); columnRow++) {
+			assets.addColumnMapping(tableColumns.getValueAt(columnRow, "SOURCE"),
+					tableColumns.getValueAt(columnRow, "TARGET COLUMN"),
+					tableColumns.getValueAt(columnRow, "INITIAL VALUE"), tableMapping.getID());
+		}
+	}
+
+	public static void main(String[] args) throws ConfigurationException {
 
 		logger.info(MessageFormat.format("Staring metadata integration - v{0}.{1}",
 				new Object[] { ExportMetadata.VERSION, ExportMetadata.BUILD }));
@@ -574,8 +318,12 @@ public class ExportMetadata {
 		// args = "-p preview.txt -ds TESTDB,ORCL".split(" ");
 		// args = "-d -ub -p preview.txt -ds CDC_Oracle_cdcdemoa -sub
 		// SARC".split(" ");
-		args = "-d -ub -ds CDC_Oracle_cdcdemoa -s SARC -p preview.txt -x".split(" ");
-		new ExportMetadata(args);
+		args = "-d -ds CDC_DB2 -p preview.txt".split(" ");
+		try {
+			new ExportMetadata(args);
+		} catch (EmbeddedScriptException | ExportMetadataParmsException | ExportMetadataException ese) {
+			logger.error("Error while exporting the metadata: " + ese.getMessage());
+		}
 	}
 
 }

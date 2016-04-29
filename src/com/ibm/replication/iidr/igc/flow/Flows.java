@@ -676,35 +676,35 @@ public class Flows {
 	public static void main(String[] args) {
 		
 		
-		Assets assets = new Assets();
-		Datastore ds = new Datastore(assets.getNextDatastoreID(), "TESTDB", "TESTDB DB2 database on troia  DATABASE:TESTDB", "troia", 
-				"10901", "V11R3M3T0BCDD_BR_LSTYTHIK_96_7", "Java VM", "DB2 for LUW", "Dual");
-		Datastore ds2 = new Datastore(assets.getNextDatastoreID(), "ORCL", "TESTDB DB2 database on troia  DATABASE:ORCL", "serv1", 
-				"10901", "V11R3M3T0BCDD_BR_LSTYTHIK_96_7", "Java VM", "DB2 for LUW", "Dual");
-		Subscription sub = new Subscription(assets.getNextSubscriptionID(), "BLA", "Replicating customer data", "ORCL", "TESTDB", "BLA", "Auto Select", "", "No", "ds1");
-		sub.setTargetDatastoreID("ds2");
-		TableMapping tm = new TableMapping("tm1", "DISCOUNT", "TAB1", "NICE", "TAB2", "Standard", "Mirror", "No", "sub1");
-		TableMapping tm2 = new TableMapping("tm2", "HAPOALIM", "TAB1", "NICE", "TAB2", "Standard", "Mirror", "No", "sub1");
-		ColumnMapping cm = new ColumnMapping("cm1", "ALBUMID", "ALBUMID_TG", "", "tm1");
-		ColumnMapping cm2 = new ColumnMapping("cm2", "ALBUM_NAME", "ALBUM_NAME_TG", "", "tm1");
-		RuleSet rs = new RuleSet("rs1", "A_TABLES", "TESTS", "A*", "", "No", "", "sub1");
-		RSTableMapping rstm = new RSTableMapping("rstm1", "DISCOUNT", "TAB1", "No", "sub1");
-		
-		
-		assets.addDatastore(ds);
-		assets.addDatastore(ds2);
-		assets.addSubscription(sub);
-		assets.addTableMapping(tm);
-		assets.addTableMapping(tm2);
-		assets.addColumnMapping(cm);
-		assets.addColumnMapping(cm2);
-		assets.addRuleSet(rs);
-		assets.addRSTableMapping(rstm);
-		
-		Flows flows = new Flows(assets);
-		
-		//System.out.println(flows.toXML());
-		System.out.println(flows.preview());
+//		Assets assets = new Assets();
+//		Datastore ds = new Datastore(assets.getNextDatastoreID(), "TESTDB", "TESTDB DB2 database on troia  DATABASE:TESTDB", "troia", 
+//				"10901", "V11R3M3T0BCDD_BR_LSTYTHIK_96_7", "Java VM", "DB2 for LUW", "Dual");
+//		Datastore ds2 = new Datastore(assets.getNextDatastoreID(), "ORCL", "TESTDB DB2 database on troia  DATABASE:ORCL", "serv1", 
+//				"10901", "V11R3M3T0BCDD_BR_LSTYTHIK_96_7", "Java VM", "DB2 for LUW", "Dual");
+//		Subscription sub = new Subscription(assets.getNextSubscriptionID(), "BLA", "Replicating customer data", "ORCL", "TESTDB", "BLA", "Auto Select", "", "No", "ds1");
+//		sub.setTargetDatastoreID("ds2");
+//		TableMapping tm = new TableMapping("tm1", "DISCOUNT", "TAB1", "NICE", "TAB2", "Standard", "Mirror", "No", "sub1");
+//		TableMapping tm2 = new TableMapping("tm2", "HAPOALIM", "TAB1", "NICE", "TAB2", "Standard", "Mirror", "No", "sub1");
+//		ColumnMapping cm = new ColumnMapping("cm1", "ALBUMID", "ALBUMID_TG", "", "tm1");
+//		ColumnMapping cm2 = new ColumnMapping("cm2", "ALBUM_NAME", "ALBUM_NAME_TG", "", "tm1");
+//		RuleSet rs = new RuleSet("rs1", "A_TABLES", "TESTS", "A*", "", "No", "", "sub1");
+//		RSTableMapping rstm = new RSTableMapping("rstm1", "DISCOUNT", "TAB1", "No", "sub1");
+//		
+//		
+//		assets.addDatastore(ds);
+//		assets.addDatastore(ds2);
+//		assets.addSubscription(sub);
+//		assets.addTableMapping(tm);
+//		assets.addTableMapping(tm2);
+//		assets.addColumnMapping(cm);
+//		assets.addColumnMapping(cm2);
+//		assets.addRuleSet(rs);
+//		assets.addRSTableMapping(rstm);
+//		
+//		Flows flows = new Flows(assets);
+//		
+//		//System.out.println(flows.toXML());
+//		System.out.println(flows.preview());
 		
 	}
 
