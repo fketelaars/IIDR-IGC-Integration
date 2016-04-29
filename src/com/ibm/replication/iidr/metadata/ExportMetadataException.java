@@ -7,4 +7,8 @@ public class ExportMetadataException extends Exception {
 		super(arg0);
 	}
 
+	public ExportMetadataException(String message) {
+		super(message);
+	}
+
 }

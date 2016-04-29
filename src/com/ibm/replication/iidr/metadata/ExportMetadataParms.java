@@ -23,7 +23,6 @@
 
 package com.ibm.replication.iidr.metadata;
 
-
 import org.apache.commons.cli.*;
 
 public class ExportMetadataParms {
@@ -36,62 +35,56 @@ public class ExportMetadataParms {
 	public boolean debug;
 	public String datastore;
 	public boolean previewOnly;
-	public String previewFile;
+	public boolean xmlFileOutput;
 	public String subscription;
 	public boolean updateBundle;
 
 	public ExportMetadataParms(String[] commandLineArguments) throws ExportMetadataParmsException {
-		
+		// Initialize parameters
 		this.debug = false;
 		this.datastore = "";
 		this.formatter = new HelpFormatter();
 		this.parser = new DefaultParser();
 		this.options = new Options();
 		this.previewOnly = false;
-		this.previewFile = "";
+		this.xmlFileOutput = false;
 		this.subscription = "";
 		this.updateBundle = false;
-		
+
 		this.options.addOption("d", false, "");
 		this.options.addOption("ub", false, "");
-		this.options.addOption( Option.builder("p").hasArg().build());
-		this.options.addOption( Option.builder("ds").hasArg().build());
-		this.options.addOption( Option.builder("sub").hasArg().build());
-		
+		this.options.addOption("p", false, "");
+		this.options.addOption("xp", false, "");
+		this.options.addOption(Option.builder("ds").hasArg().build());
+		this.options.addOption(Option.builder("s").hasArg().build());
+
 		try {
 			commandLine = parser.parse(options, commandLineArguments);
 		} catch (ParseException e) {
 			sendInvalidParameterException("");
 		}
-		
+
 		this.debug = commandLine.hasOption("d");
 		this.updateBundle = commandLine.hasOption("ub");
 		this.previewOnly = commandLine.hasOption("p");
-		
-		if (this.previewOnly) {
-			this.previewFile = commandLine.getOptionValue("p");
-		}
-		
+		this.xmlFileOutput = commandLine.hasOption("xf");
+
+		// Datastore parameter is mandatory
 		if (commandLine.getOptionValue("ds") != null) {
-			
 			this.datastore = commandLine.getOptionValue("ds");
-			
-			if (commandLine.getOptionValue("sub") != null) {
-				this.subscription = commandLine.getOptionValue("sub");
+			if (commandLine.getOptionValue("s") != null) {
+				this.subscription = commandLine.getOptionValue("s");
 			}
-			
-		}
-		
+
+		} else
+			sendInvalidParameterException("Datastore (ds parameter) must be specified");
+
 	}
 
+	// Method to send exception
 	private void sendInvalidParameterException(String message) throws ExportMetadataParmsException {
 		formatter.printHelp("ExportMetadata", message, this.options, "", true);
 		throw new ExportMetadataParmsException("Error while validating parameters");
-	}
-
-	
-	public static void main(String[] args) throws ExportMetadataParmsException {
-		
 	}
 
 }

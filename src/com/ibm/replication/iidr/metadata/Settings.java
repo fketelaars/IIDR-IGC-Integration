@@ -41,15 +41,15 @@ public class Settings {
 	String asPassword = null;
 	int asPort = 0;
 
-
 	// Information Server metadata exchange settings
 	String isHostName = null;
 	String isUserName = null;
 	String isPassword = null;
 	int isPort = 0;
-	
+
 	String bundleFilePath = null;
-	
+	String defaultDataPath = "";
+
 	boolean trustSelfSignedCertificates = false;
 
 	/**
@@ -64,16 +64,17 @@ public class Settings {
 		asUserName = config.getString("asUserName");
 		String encryptedAsPassword = config.getString("asPassword");
 		asPort = config.getInt("asPort", 10101);
-		
+
 		isHostName = config.getString("isHostName");
 		isUserName = config.getString("isUserName");
 		String encryptedISPassword = config.getString("isPassword");
 		isPort = config.getInt("isPort", 10101);
 
 		bundleFilePath = config.getString("bundleFilePath");
-		
+		defaultDataPath = config.getString("defaultDataPath");
+
 		trustSelfSignedCertificates = config.getBoolean("trustSelfSignedCertificates");
-		
+
 		// Check if the password has already been encrypted
 		// If not, encrypt and save the properties
 		try {
@@ -84,7 +85,7 @@ public class Settings {
 			config.setProperty("asPassword", encryptedAsPassword);
 			config.save();
 		}
-		
+
 		try {
 			isPassword = Encryptor.decodeAndDecrypt(encryptedISPassword);
 		} catch (EncryptedDataException e) {
@@ -113,7 +114,7 @@ public class Settings {
 
 	public static void main(String[] args)
 			throws ConfigurationException, IllegalArgumentException, IllegalAccessException {
-		new Settings("ExportMetadata.properties");
+		new Settings("conf/ExportMetadata.properties");
 	}
 
 }
