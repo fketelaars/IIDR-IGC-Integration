@@ -41,22 +41,22 @@ public class ExportMetadataParms {
 
 	public ExportMetadataParms(String[] commandLineArguments) throws ExportMetadataParmsException {
 		// Initialize parameters
-		this.debug = false;
-		this.datastore = "";
-		this.formatter = new HelpFormatter();
-		this.parser = new DefaultParser();
-		this.options = new Options();
-		this.previewOnly = false;
-		this.xmlFileOutput = false;
-		this.subscription = "";
-		this.updateBundle = false;
+		debug = false;
+		datastore = "";
+		formatter = new HelpFormatter();
+		parser = new DefaultParser();
+		options = new Options();
+		previewOnly = false;
+		xmlFileOutput = false;
+		subscription = null;
+		updateBundle = false;
 
-		this.options.addOption("d", false, "");
-		this.options.addOption("ub", false, "");
-		this.options.addOption("p", false, "");
-		this.options.addOption("xp", false, "");
-		this.options.addOption(Option.builder("ds").hasArg().build());
-		this.options.addOption(Option.builder("s").hasArg().build());
+		options.addOption("d", false, "");
+		options.addOption("ub", false, "");
+		options.addOption("p", false, "");
+		options.addOption("xp", false, "");
+		options.addOption(Option.builder("ds").hasArg().build());
+		options.addOption(Option.builder("s").hasArg().build());
 
 		try {
 			commandLine = parser.parse(options, commandLineArguments);
@@ -71,9 +71,9 @@ public class ExportMetadataParms {
 
 		// Datastore parameter is mandatory
 		if (commandLine.getOptionValue("ds") != null) {
-			this.datastore = commandLine.getOptionValue("ds");
+			datastore = commandLine.getOptionValue("ds");
 			if (commandLine.getOptionValue("s") != null) {
-				this.subscription = commandLine.getOptionValue("s");
+				subscription = commandLine.getOptionValue("s");
 			}
 
 		} else

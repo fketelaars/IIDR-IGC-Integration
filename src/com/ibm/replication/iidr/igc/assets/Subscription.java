@@ -5,7 +5,6 @@ import java.text.MessageFormat;
 public class Subscription {
 
 	public static final String IGC_CLASS_NAME = "$IIDR-Subscription";
-	public static final String NO_DATASTORE = "NA";
 
 	private String id;
 	private String name;
@@ -17,10 +16,12 @@ public class Subscription {
 	private String firewall_port;
 	private Boolean persistency;
 	private String parent_id;
+	private String source_datastore_id;
 	private String target_datastore_id;
 
 	public Subscription(String id, String name, String description, String source_datastore, String target_datastore,
-			String source_id, String tcp_host, String firewall_port, String persistency, String parent_id) {
+			String source_id, String tcp_host, String firewall_port, String persistency, String parent_id,
+			String target_datastore_id) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -31,7 +32,8 @@ public class Subscription {
 		this.firewall_port = firewall_port;
 		this.persistency = new Boolean(persistency);
 		this.parent_id = parent_id;
-		this.target_datastore_id = Subscription.NO_DATASTORE;
+		this.source_datastore_id = parent_id;
+		this.target_datastore_id = target_datastore_id;
 	}
 
 	public void setTargetDatastoreID(String target_datastore_id) {
@@ -95,7 +97,7 @@ public class Subscription {
 	public static void main(String[] args) {
 
 		Subscription sub = new Subscription("sub1", "BLA", "Replicating customer data", "ORCL", "TESTDB", "BLA",
-				"Auto Select", "", "No", "ds1");
+				"Auto Select", "", "No", "ds1", "ds2");
 
 		System.out.println(sub.toAssetXML());
 	}

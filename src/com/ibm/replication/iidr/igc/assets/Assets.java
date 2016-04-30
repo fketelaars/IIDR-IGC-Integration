@@ -23,49 +23,49 @@ public class Assets {
 	final static Logger logger = Logger.getLogger("com.ibm.replication.iidr.metadata.ExportMetadata");
 
 	public Assets() {
-		this.datastores = new ArrayList<Datastore>();
-		this.subscriptions = new ArrayList<Subscription>();
-		this.tableMappings = new ArrayList<TableMapping>();
-		this.columnMappings = new ArrayList<ColumnMapping>();
-		this.ruleSets = new ArrayList<RuleSet>();
-		this.rsTableMappings = new ArrayList<RSTableMapping>();
+		datastores = new ArrayList<Datastore>();
+		subscriptions = new ArrayList<Subscription>();
+		tableMappings = new ArrayList<TableMapping>();
+		columnMappings = new ArrayList<ColumnMapping>();
+		ruleSets = new ArrayList<RuleSet>();
+		rsTableMappings = new ArrayList<RSTableMapping>();
 
-		this.datastoresID = 0;
-		this.subscriptionsID = 0;
-		this.tableMappingsID = 0;
-		this.columnMappingsID = 0;
-		this.ruleSetsID = 0;
-		this.rsTableMappingsID = 0;
+		datastoresID = 0;
+		subscriptionsID = 0;
+		tableMappingsID = 0;
+		columnMappingsID = 0;
+		ruleSetsID = 0;
+		rsTableMappingsID = 0;
 
 	}
 
-	public String getNextDatastoreID() {
-		++this.datastoresID;
+	private String getNextDatastoreID() {
+		++datastoresID;
 		return "ds" + this.datastoresID;
 	}
 
-	public String getNextSubscriptionID() {
-		++this.subscriptionsID;
+	private String getNextSubscriptionID() {
+		++subscriptionsID;
 		return "sub" + this.subscriptionsID;
 	}
 
-	public String getNextTableMappingID() {
-		++this.tableMappingsID;
+	private String getNextTableMappingID() {
+		++tableMappingsID;
 		return "tm" + this.tableMappingsID;
 	}
 
-	public String getNextColumnMappingID() {
-		++this.columnMappingsID;
+	private String getNextColumnMappingID() {
+		++columnMappingsID;
 		return "cm" + this.columnMappingsID;
 	}
 
-	public String getNextRuleSetID() {
-		++this.ruleSetsID;
+	private String getNextRuleSetID() {
+		++ruleSetsID;
 		return "rs" + this.ruleSetsID;
 	}
 
-	public String getNextRSTableMappingID() {
-		++this.rsTableMappingsID;
+	private String getNextRSTableMappingID() {
+		++rsTableMappingsID;
 		return "rstm" + this.rsTableMappingsID;
 	}
 
@@ -87,10 +87,6 @@ public class Assets {
 		return returnDatastore;
 	}
 
-	public void addSubscription(Subscription subscription) {
-		this.subscriptions.add(subscription);
-	}
-
 	public Subscription addSubscription(String name, String description, String sourceDatastoreName,
 			String targetDatastoreName, String sourceID, String hostName, String firewallPort, String persistency,
 			Datastore parentDatastore) {
@@ -102,17 +98,15 @@ public class Assets {
 				returnSubscription = subscription;
 				break;
 			}
-			if (returnSubscription == null) {
-				returnSubscription = new Subscription(getNextSubscriptionID(), name, description, sourceDatastoreName,
-						targetDatastoreName, sourceID, hostName, firewallPort, persistency, parentDatastore.getID());
-				subscriptions.add(returnSubscription);
-			}
+		}
+		if (returnSubscription == null) {
+			// TODO: Get ID of target datastore
+			returnSubscription = new Subscription(getNextSubscriptionID(), name, description, sourceDatastoreName,
+					targetDatastoreName, sourceID, hostName, firewallPort, persistency, parentDatastore.getID(),
+					getDatastoreByName(targetDatastoreName).getID());
+			subscriptions.add(returnSubscription);
 		}
 		return returnSubscription;
-	}
-
-	public void addTableMapping(TableMapping tableMapping) {
-		this.tableMappings.add(tableMapping);
 	}
 
 	public TableMapping addTableToTableMapping(String source_schema, String source_table, String target_schema,
@@ -182,46 +176,36 @@ public class Assets {
 				return true;
 			}
 		}
-
 		return false;
 	}
 
 	public ArrayList<Subscription> getSubscriptionsByParentID(String parentID) {
-
 		ArrayList<Subscription> subscriptions = new ArrayList<Subscription>();
-
 		for (Subscription subscription : this.subscriptions) {
 			if (subscription.getParentID().equalsIgnoreCase(parentID)) {
 				subscriptions.add(subscription);
 			}
 		}
-
 		return subscriptions;
 	}
 
 	public ArrayList<TableMapping> getTableMappingsByParentID(String parentID) {
-
 		ArrayList<TableMapping> tableMappings = new ArrayList<TableMapping>();
-
 		for (TableMapping tableMapping : this.tableMappings) {
 			if (tableMapping.getParentID().equalsIgnoreCase(parentID)) {
 				tableMappings.add(tableMapping);
 			}
 		}
-
 		return tableMappings;
 	}
 
 	public ArrayList<RSTableMapping> getRSTableMappingsByParentID(String parentID) {
-
 		ArrayList<RSTableMapping> tableMappings = new ArrayList<RSTableMapping>();
-
 		for (RSTableMapping tableMapping : this.rsTableMappings) {
 			if (tableMapping.getParentID().equalsIgnoreCase(parentID)) {
 				tableMappings.add(tableMapping);
 			}
 		}
-
 		return tableMappings;
 	}
 
@@ -252,9 +236,7 @@ public class Assets {
 	}
 
 	public ArrayList<ColumnMapping> getColumnMappingByParentID(String parentID) {
-
 		ArrayList<ColumnMapping> columnMappings = new ArrayList<ColumnMapping>();
-
 		for (ColumnMapping columnMapping : this.columnMappings) {
 			if (columnMapping.getParentID().equalsIgnoreCase(parentID)) {
 				columnMappings.add(columnMapping);
@@ -265,12 +247,10 @@ public class Assets {
 	}
 
 	public String toXML() {
-
 		String assetsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
 				+ "<doc xmlns=\"http://www.ibm.com/iis/flow-doc\">\n" + "\t<assets>\n";
 
 		String completeAssetIDs = "";
-
 		for (Datastore datastore : this.datastores) {
 			assetsXML += datastore.toAssetXML();
 			completeAssetIDs += datastore.getID() + " ";
@@ -297,31 +277,24 @@ public class Assets {
 		}
 
 		assetsXML += "\t</assets>\n";
-
 		assetsXML += "\t<importAction partialAssetIDs=\"" + completeAssetIDs + "\" />\n";
-
 		assetsXML += "</doc>";
-
 		return assetsXML;
 	}
 
 	public ArrayList<String> listDatastores() {
 		ArrayList<String> datastoresList = new ArrayList<String>();
-
 		for (Datastore datastore : this.datastores) {
 			datastoresList.add(datastore.toString());
 		}
-
 		return datastoresList;
 	}
 
 	public ArrayList<String> listSubscriptions() {
 		ArrayList<String> subscriptionList = new ArrayList<String>();
-
 		for (Subscription subscription : this.subscriptions) {
 			subscriptionList.add(subscription.toString());
 		}
-
 		return subscriptionList;
 	}
 
@@ -331,37 +304,30 @@ public class Assets {
 		for (TableMapping tableMapping : this.tableMappings) {
 			tableMAppingList.add(tableMapping.toString());
 		}
-
 		return tableMAppingList;
 	}
 
 	public ArrayList<String> listRuleSets() {
 		ArrayList<String> ruleSetList = new ArrayList<String>();
-
 		for (RuleSet ruleSet : this.ruleSets) {
 			ruleSetList.add(ruleSet.toString());
 		}
-
 		return ruleSetList;
 	}
 
 	public ArrayList<String> listColumnMappings() {
 		ArrayList<String> columnMappingList = new ArrayList<String>();
-
 		for (ColumnMapping columnMapping : this.columnMappings) {
 			columnMappingList.add(columnMapping.toString());
 		}
-
 		return columnMappingList;
 	}
 
 	public ArrayList<String> listRSTableMappings() {
 		ArrayList<String> rsTableMAppingList = new ArrayList<String>();
-
 		for (RSTableMapping rsTableMapping : this.rsTableMappings) {
 			rsTableMAppingList.add(rsTableMapping.toString());
 		}
-
 		return rsTableMAppingList;
 	}
 
@@ -409,13 +375,21 @@ public class Assets {
 		return null;
 	}
 
-	public Datastore getDatastore(String id) {
-		for (Datastore datastore : this.datastores) {
+	public Datastore getDatastoreByID(String id) {
+		for (Datastore datastore : datastores) {
 			if (datastore.getID().equalsIgnoreCase(id)) {
 				return datastore;
 			}
 		}
+		return null;
+	}
 
+	public Datastore getDatastoreByName(String name) {
+		for (Datastore datastore : datastores) {
+			if (datastore.getName().equals(name)) {
+				return datastore;
+			}
+		}
 		return null;
 	}
 

@@ -80,8 +80,8 @@ public class Flows {
 				continue;
 			}
 			
-			Datastore sourceDatastore = this.assets.getDatastore(currSubscription.getParentID());
-			Datastore targetDatastore = this.assets.getDatastore(currSubscription.getTargetDatastoreID());
+			Datastore sourceDatastore = this.assets.getDatastoreByID(currSubscription.getParentID());
+			Datastore targetDatastore = this.assets.getDatastoreByID(currSubscription.getTargetDatastoreID());
 			
 			if (sourceDatastore == null || targetDatastore == null) {
 				continue;
@@ -136,8 +136,8 @@ public class Flows {
 				continue;
 			}
 			
-			Datastore sourceDatastore = this.assets.getDatastore(currSubscription.getParentID());
-			Datastore targetDatastore = this.assets.getDatastore(currSubscription.getTargetDatastoreID());
+			Datastore sourceDatastore = this.assets.getDatastoreByID(currSubscription.getParentID());
+			Datastore targetDatastore = this.assets.getDatastoreByID(currSubscription.getTargetDatastoreID());
 			
 			if (sourceDatastore == null || targetDatastore == null) {
 				continue;

@@ -184,8 +184,9 @@ public class ExportMetadata {
 				subscriptionNames.add(subscriptionsTable.getValueAt(tableRow, "SUBSCRIPTION"));
 			}
 		} else {
-			subscriptionNames = new ArrayList<String>(Arrays.asList(parms.subscription.split(",")));
+			subscriptionNames = new ArrayList<String>(Arrays.asList(parms.subscription.split(",", -1)));
 		}
+		logger.debug("Subscription names: " + subscriptionNames);
 		// Now get details for all selected subscriptions
 		for (String subscriptionName : subscriptionNames) {
 			logger.debug("Getting details for subscription " + subscriptionName);
@@ -222,10 +223,19 @@ public class ExportMetadata {
 	}
 
 	private void collectTableMappings(Subscription subscription) throws EmbeddedScriptException {
+		logger.debug(MessageFormat.format("Collecting table mappings for subscription {0}",
+				new Object[] { subscription.getName() }));
 		script.execute(MessageFormat.format("select subscription name {0}", new Object[] { subscription.getName() }));
 		// If the target datastore is InfoSphere DataStage, add table assets
 		// targeting flat files
-		if (assets.getDatastore(subscription.getTargetDatastoreID()).getDatabase().equals(DATASTORE_TYPE_DATASTAGE)) {
+
+		logger.debug(MessageFormat.format("Target datastore for subscription {0} is {1}. Type of datastore is {2}",
+				new Object[] { subscription.getName(), subscription.getTargetDatastoreName(),
+						assets.getDatastoreByID(subscription.getTargetDatastoreID()).getDatabase() }));
+
+		logger.debug("Target datastore for subscription " + subscription.getName() + " ");
+		if (assets.getDatastoreByID(subscription.getTargetDatastoreID()).getDatabase()
+				.equals(DATASTORE_TYPE_DATASTAGE)) {
 			logger.debug("Collecing DataStage table mappings for subscription " + subscription.getName());
 			script.execute(
 					MessageFormat.format("list table mappings name {0}", new Object[] { subscription.getName() }));
@@ -272,22 +282,28 @@ public class ExportMetadata {
 	private void collectRSMappings(Subscription subscription) throws EmbeddedScriptException {
 		script.execute(MessageFormat.format("select subscription name {0}", new Object[] { subscription.getName() }));
 		// Listing rule sets
-		logger.info("Getting rule sets for subscription " + subscription.getName());
-		ResultStringTable ruleSets = (ResultStringTable) script.getResult();
-		for (int rsTableRow = 0; rsTableRow < ruleSets.getRowCount(); rsTableRow++) {
-			assets.addRuleSet(ruleSets.getValueAt(rsTableRow, "RULE SET NAME"),
-					ruleSets.getValueAt(rsTableRow, "SCHEMA"), ruleSets.getValueAt(rsTableRow, "INCLUDE TABLES"),
-					ruleSets.getValueAt(rsTableRow, "EXCLUDE TABLES"),
-					ruleSets.getValueAt(rsTableRow, "STRUCTURE ONLY"), ruleSets.getValueAt(rsTableRow, "CONTEXT"),
-					subscription.getID());
-		}
-		// Listing rule set tables
-		logger.info("Listing rule set tables for subscription " + subscription.getName());
-		ResultStringTable ruleSetTables = (ResultStringTable) script.getResult();
-		for (int rsTableRow = 0; rsTableRow < ruleSetTables.getRowCount(); rsTableRow++) {
-			assets.addRSTableMapping(ruleSetTables.getValueAt(rsTableRow, "SCHEMA"),
-					ruleSetTables.getValueAt(rsTableRow, "TABLE NAME"),
-					ruleSetTables.getValueAt(rsTableRow, "STRUCTURE ONLY"), subscription.getID());
+		try {
+			logger.info("Getting rule sets for subscription " + subscription.getName());
+			script.execute("list rule sets");
+			ResultStringTable ruleSets = (ResultStringTable) script.getResult();
+			for (int rsTableRow = 0; rsTableRow < ruleSets.getRowCount(); rsTableRow++) {
+				assets.addRuleSet(ruleSets.getValueAt(rsTableRow, "RULE SET NAME"),
+						ruleSets.getValueAt(rsTableRow, "SCHEMA"), ruleSets.getValueAt(rsTableRow, "INCLUDE TABLES"),
+						ruleSets.getValueAt(rsTableRow, "EXCLUDE TABLES"),
+						ruleSets.getValueAt(rsTableRow, "STRUCTURE ONLY"), ruleSets.getValueAt(rsTableRow, "CONTEXT"),
+						subscription.getID());
+			}
+			// Listing rule set tables
+			logger.info("Listing rule set tables for subscription " + subscription.getName());
+			ResultStringTable ruleSetTables = (ResultStringTable) script.getResult();
+			for (int rsTableRow = 0; rsTableRow < ruleSetTables.getRowCount(); rsTableRow++) {
+				assets.addRSTableMapping(ruleSetTables.getValueAt(rsTableRow, "SCHEMA"),
+						ruleSetTables.getValueAt(rsTableRow, "TABLE NAME"),
+						ruleSetTables.getValueAt(rsTableRow, "STRUCTURE ONLY"), subscription.getID());
+			}
+		} catch (EmbeddedScriptException ese) {
+			logger.debug(MessageFormat.format("Rule set mappings not applicable to subscription {0}",
+					new Object[] { subscription.getName() }));
 		}
 	}
 
@@ -299,7 +315,6 @@ public class ExportMetadata {
 				new Object[] { tableMapping.getSourceSchema(), tableMapping.getSourceTable(),
 						tableMapping.getTargetSchema(), tableMapping.getTargetTable() }));
 
-		logger.debug("Listing column mappings for table");
 		script.execute("list column mappings");
 
 		ResultStringTable tableColumns = (ResultStringTable) script.getResult();
@@ -312,7 +327,7 @@ public class ExportMetadata {
 
 	public static void main(String[] args) throws ConfigurationException {
 
-		logger.info(MessageFormat.format("Staring metadata integration - v{0}.{1}",
+		logger.info(MessageFormat.format("Starting metadata integration - v{0}.{1}",
 				new Object[] { ExportMetadata.VERSION, ExportMetadata.BUILD }));
 
 		// args = "-p preview.txt -ds TESTDB,ORCL".split(" ");
@@ -322,8 +337,11 @@ public class ExportMetadata {
 		try {
 			new ExportMetadata(args);
 		} catch (EmbeddedScriptException | ExportMetadataParmsException | ExportMetadataException ese) {
+			ese.printStackTrace();
 			logger.error("Error while exporting the metadata: " + ese.getMessage());
 		}
+
+		logger.info("Finished exporting the CDC metadata");
 	}
 
 }
