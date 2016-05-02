@@ -61,7 +61,7 @@ public class ExportMetadata {
 
 	public ExportMetadata(String[] commandLineArguments)
 			throws ConfigurationException, ExportMetadataParmsException, EmbeddedScriptException, ExportMetadataException {
-		this.settings = new Settings(this.getClass().getSimpleName() + ".properties");
+		this.settings = new Settings("conf/" + this.getClass().getSimpleName() + ".properties");
 		this.parms = new ExportMetadataParms(commandLineArguments);
 		
 		this.assets = new Assets();
@@ -72,10 +72,10 @@ public class ExportMetadata {
 			
 		this.collectMetadata();
 		
-		Utils.writeContentToFile("C:\\Work\\Box Sync\\Projects\\Personal\\IIDR_OpenIGC\\sub2.xml", this.assets.toXML());
+		Utils.writeContentToFile("assets.xml", this.assets.toXML());
 		
 		this.flows = new Flows(assets);
-		Utils.writeContentToFile("C:\\Work\\Box Sync\\Projects\\Personal\\IIDR_OpenIGC\\flow2.xml", this.flows.toXML());
+		Utils.writeContentToFile("flow.xml", this.flows.toXML());
 		
 		if (!this.parms.previewOnly) {
 			try {
@@ -430,9 +430,9 @@ public class ExportMetadata {
 		logger.info(MessageFormat.format("Staring metadata integration - v{0}.{1}",
 				new Object[] {ExportMetadata.VERSION, ExportMetadata.BUILD}));
 		
-		//args = "-p preview.txt -ds TESTDB,ORCL".split(" ");
-		args = "-d -ub -p preview.txt -ds CDC_Oracle_cdcdemoa -sub SARC".split(" ");
-		args = "-d -ub -ds CDC_Oracle_cdcdemoa -sub SARC".split(" ");
+		args = "-p preview.txt -ds TESTDB -sub SUB1".split(" ");
+		//args = "-d -ub -p preview.txt -ds CDC_Oracle_cdcdemoa -sub SARC".split(" ");
+		//args = "-d -ub -ds CDC_Oracle_cdcdemoa -sub SARC".split(" ");
 		new ExportMetadata(args);
 	}
 
