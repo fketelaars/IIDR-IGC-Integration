@@ -81,6 +81,7 @@ public class Settings {
 			asPassword = Encryptor.decodeAndDecrypt(encryptedAsPassword);
 		} catch (EncryptedDataException e) {
 			logger.info("Encrypting asPassword");
+			asPassword = encryptedAsPassword;
 			encryptedAsPassword = Encryptor.encryptAndEncode(encryptedAsPassword);
 			config.setProperty("asPassword", encryptedAsPassword);
 			config.save();
@@ -90,6 +91,7 @@ public class Settings {
 			isPassword = Encryptor.decodeAndDecrypt(encryptedISPassword);
 		} catch (EncryptedDataException e) {
 			logger.info("Encrypting isPassword");
+			isPassword = encryptedISPassword;
 			encryptedISPassword = Encryptor.encryptAndEncode(encryptedISPassword);
 			config.setProperty("isPassword", encryptedISPassword);
 			config.save();

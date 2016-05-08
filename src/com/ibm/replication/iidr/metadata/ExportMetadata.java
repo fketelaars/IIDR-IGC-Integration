@@ -60,6 +60,7 @@ public class ExportMetadata {
 	private Assets assets;
 	private Flows flows;
 
+<<<<<<< HEAD
 	public ExportMetadata(String[] commandLineArguments) throws ConfigurationException, ExportMetadataParmsException,
 			EmbeddedScriptException, ExportMetadataException {
 		settings = new Settings("conf" + File.separator + this.getClass().getSimpleName() + ".properties");
@@ -68,8 +69,19 @@ public class ExportMetadata {
 		assets = new Assets();
 
 		if (parms.debug) {
+=======
+	public ExportMetadata(String[] commandLineArguments)
+			throws ConfigurationException, ExportMetadataParmsException, EmbeddedScriptException, ExportMetadataException {
+		this.settings = new Settings("conf/" + this.getClass().getSimpleName() + ".properties");
+		this.parms = new ExportMetadataParms(commandLineArguments);
+		
+		this.assets = new Assets();
+		
+		if (this.parms.debug) {
+>>>>>>> branch 'master' of https://github.com/fketelaars/IIDR-IGC-Integration.git
 			logger.setLevel(Level.DEBUG);
 		}
+<<<<<<< HEAD
 
 		// Collect the metadata
 		collectMetadata();
@@ -80,6 +92,17 @@ public class ExportMetadata {
 		Utils.writeContentToFile(settings.defaultDataPath + File.separator + "subscriptionflow.xml.xml", flows.toXML());
 
 		if (!parms.previewOnly) {
+=======
+			
+		this.collectMetadata();
+		
+		Utils.writeContentToFile("assets.xml", this.assets.toXML());
+		
+		this.flows = new Flows(assets);
+		Utils.writeContentToFile("flow.xml", this.flows.toXML());
+		
+		if (!this.parms.previewOnly) {
+>>>>>>> branch 'master' of https://github.com/fketelaars/IIDR-IGC-Integration.git
 			try {
 
 				IGCRest igcRest = new IGCRest(settings.isHostName, settings.isPort, settings.isUserName,
@@ -169,6 +192,7 @@ public class ExportMetadata {
 		return datastore;
 	}
 
+<<<<<<< HEAD
 	// Get details for subsriptions of datastore
 	private void collectSubscriptions(Datastore sourceDatastore) throws EmbeddedScriptException {
 		ArrayList<String> subscriptionNames = new ArrayList<String>();
@@ -342,6 +366,15 @@ public class ExportMetadata {
 		}
 
 		logger.info("Finished exporting the CDC metadata");
+=======
+		logger.info(MessageFormat.format("Staring metadata integration - v{0}.{1}",
+				new Object[] {ExportMetadata.VERSION, ExportMetadata.BUILD}));
+		
+		args = "-p preview.txt -ds TESTDB -sub SUB1".split(" ");
+		//args = "-d -ub -p preview.txt -ds CDC_Oracle_cdcdemoa -sub SARC".split(" ");
+		//args = "-d -ub -ds CDC_Oracle_cdcdemoa -sub SARC".split(" ");
+		new ExportMetadata(args);
+>>>>>>> branch 'master' of https://github.com/fketelaars/IIDR-IGC-Integration.git
 	}
 
 }
