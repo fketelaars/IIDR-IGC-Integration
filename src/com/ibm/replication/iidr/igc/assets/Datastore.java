@@ -1,11 +1,17 @@
 package com.ibm.replication.iidr.igc.assets;
 
 import java.text.MessageFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.log4j.Logger;
 
 public class Datastore {
 
 	public static final String IGC_CLASS_NAME = "$IIDR-Datastore";
 	public static final String DATABASE_TYPE_DATASTAGE = "IBM InfoSphere DataStage";
+	
+	final static Logger logger = Logger.getLogger("com.ibm.replication.cdc.metadata.ExportMetadata");
 	
 	private String id;
 	private String name;
@@ -14,12 +20,12 @@ public class Datastore {
 	private String port;
 	private String version;
 	private String platform;
-	private String database;
+	private String engine_type;
 	private String type;
 	private String database_name;
 	
 	public Datastore(String id, String name, String description, String host, String port, String version, 
-				     String platform, String database, String type) {
+				     String platform, String engine_type, String type) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -27,13 +33,22 @@ public class Datastore {
 		this.port = port;
 		this.version = version;
 		this.platform = platform;
-		this.database = database;
-		try {
-			this.database_name = description.split("DATABASE:")[1].split(" ")[0];
-		} catch (Exception ex) {
-			this.database_name = this.name;
+		this.engine_type = engine_type;
+		this.type = type;
+		
+		// Try to make out the database name from the datastore description
+		Pattern dbPattern = Pattern.compile("(DATABASE:|DB:)\\s*(\\w+)");
+		Matcher dbMatcher = dbPattern.matcher(description);
+		if (dbMatcher.find()) {
+			database_name = dbMatcher.group(2);
+			logger.debug(MessageFormat.format(
+					"Database name {0} for table has been retrieved from the datastore description",
+					new Object[] { database_name }));
+		} else {
+			database_name = name;
+			logger.debug(MessageFormat.format("Database name {0} for table has been set to the name of the datastore",
+					new Object[] { database_name }));
 		}
-		this.type = type;	
 	}
 	
 	public String getHost() {
@@ -45,7 +60,7 @@ public class Datastore {
 	}
 	
 	public String getDatabase() {
-		return this.database;
+		return this.engine_type;
 	}
 	
 	public String getID() {
@@ -73,7 +88,7 @@ public class Datastore {
 			"\t\t\t<attribute name=\"$type\" value=\"{10}\" />\n" + 
 			"\t\t</asset>\n", 
        		 new Object[] {this.name, this.id, this.name, this.description, this.description,
-       				 		this.host, this.port, this.version, this.platform, this.database, this.type,
+       				 		this.host, this.port, this.version, this.platform, this.engine_type, this.type,
        				 	    IGC_CLASS_NAME});
 	}
 	
