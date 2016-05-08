@@ -84,10 +84,12 @@ public class ExportMetadata {
 		// Collect the metadata
 		collectMetadata();
 
-		Utils.writeContentToFile(settings.defaultDataPath + File.separator + "subscription.xml", assets.toXML());
+		Utils.writeContentToFile(settings.defaultDataPath + File.separator + parms.datastore + "_subscription.xml",
+				assets.toXML());
 
 		flows = new Flows(assets);
-		Utils.writeContentToFile(settings.defaultDataPath + File.separator + "subscriptionflow.xml.xml", flows.toXML());
+		Utils.writeContentToFile(settings.defaultDataPath + File.separator + parms.datastore + "_subscription_flow.xml",
+				flows.toXML());
 
 		if (!parms.previewOnly) {
 			try {
@@ -109,7 +111,8 @@ public class ExportMetadata {
 				throw new ExportMetadataException(e);
 			}
 		} else {
-			String previewFileName = settings.defaultDataPath + File.separator + "ExportMetadata_Preview.txt";
+			String previewFileName = settings.defaultDataPath + File.separator + parms.datastore
+					+ "_ExportMetadata_Preview.txt";
 			logger.debug("Writing output to " + previewFileName);
 			Utils.writeContentToFile(previewFileName, flows.preview());
 		}
@@ -340,7 +343,7 @@ public class ExportMetadata {
 	public static void main(String[] args) throws ConfigurationException {
 
 		// Only set arguments when testing
-		if (args.length == 1 && args[0].equals("*Testing*")) {
+		if (args.length == 1 && args[0].equalsIgnoreCase("*Testing*")) {
 			// args = "-p preview.txt -ds TESTDB,ORCL".split(" ");
 			// args = "-d -ub -p preview.txt -ds CDC_Oracle_cdcdemoa -sub
 			// SARC".split(" ");
