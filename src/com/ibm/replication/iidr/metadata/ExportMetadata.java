@@ -269,7 +269,7 @@ public class ExportMetadata {
 			}
 			// If the target datastore is a database, add table to table assets
 		} else {
-			logger.debug("Colletcing database table mappings for subscription " + subscription.getName());
+			logger.debug("Collecting database table mappings for subscription " + subscription.getName());
 			script.execute(
 					MessageFormat.format("list table mappings name {0}", new Object[] { subscription.getName() }));
 			ResultStringTable mappingsTables = (ResultStringTable) script.getResult();
