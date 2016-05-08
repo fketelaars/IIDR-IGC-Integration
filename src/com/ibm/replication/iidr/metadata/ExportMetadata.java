@@ -24,6 +24,7 @@
 package com.ibm.replication.iidr.metadata;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,7 +53,8 @@ public class ExportMetadata {
 
 	final private static String DATASTORE_TYPE_DATASTAGE = "IBM InfoSphere DataStage";
 
-	final static Logger logger = Logger.getLogger("com.ibm.replication.iidr.metadata.ExportMetadata");
+	static Logger logger;
+
 	private Settings settings;
 	private ExportMetadataParms parms;
 
@@ -61,7 +63,15 @@ public class ExportMetadata {
 	private Flows flows;
 
 	public ExportMetadata(String[] commandLineArguments) throws ConfigurationException, ExportMetadataParmsException,
-			EmbeddedScriptException, ExportMetadataException {
+			EmbeddedScriptException, ExportMetadataException, MalformedURLException {
+		System.setProperty("log4j.configuration",
+				new File(".", File.separatorChar + "conf" + File.separatorChar + "log4j.properties").toURI().toURL()
+						.toString());
+		logger = Logger.getLogger("com.ibm.replication.iidr.metadata.ExportMetadata");
+
+		logger.info(MessageFormat.format("Starting metadata integration - v{0}.{1}",
+				new Object[] { ExportMetadata.VERSION, ExportMetadata.BUILD }));
+
 		settings = new Settings("conf" + File.separator + this.getClass().getSimpleName() + ".properties");
 		parms = new ExportMetadataParms(commandLineArguments);
 
@@ -103,6 +113,8 @@ public class ExportMetadata {
 			logger.debug("Writing output to " + previewFileName);
 			Utils.writeContentToFile(previewFileName, flows.preview());
 		}
+
+		logger.info("Finished exporting the CDC metadata");
 
 	}
 
@@ -327,21 +339,21 @@ public class ExportMetadata {
 
 	public static void main(String[] args) throws ConfigurationException {
 
-		logger.info(MessageFormat.format("Starting metadata integration - v{0}.{1}",
-				new Object[] { ExportMetadata.VERSION, ExportMetadata.BUILD }));
-
-		// args = "-p preview.txt -ds TESTDB,ORCL".split(" ");
-		// args = "-d -ub -p preview.txt -ds CDC_Oracle_cdcdemoa -sub
-		// SARC".split(" ");
-		args = "-d -ds CDC_DB2 -p preview.txt".split(" ");
+		// Only set arguments when testing
+		if (args.length == 1 && args[0].equals("*Testing*")) {
+			// args = "-p preview.txt -ds TESTDB,ORCL".split(" ");
+			// args = "-d -ub -p preview.txt -ds CDC_Oracle_cdcdemoa -sub
+			// SARC".split(" ");
+			args = "-d -ds CDC_DB2 -p preview.txt".split(" ");
+		}
 		try {
 			new ExportMetadata(args);
-		} catch (EmbeddedScriptException | ExportMetadataParmsException | ExportMetadataException ese) {
+		} catch (EmbeddedScriptException | ExportMetadataParmsException | ExportMetadataException
+				| MalformedURLException ese) {
 			ese.printStackTrace();
-			logger.error("Error while exporting the metadata: " + ese.getMessage());
+			System.err.println("Error while exporting the metadata: " + ese.getMessage());
 		}
 
-		logger.info("Finished exporting the CDC metadata");
 	}
 
 }
