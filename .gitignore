@@ -2,4 +2,4 @@
 /bin/
 
 # Ignore files in data directory
-/data/*
+# /data/*
