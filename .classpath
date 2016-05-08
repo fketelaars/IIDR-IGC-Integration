@@ -5,6 +5,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache_Commons"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/CDC_Access_Server"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/HTTP_Components"/>
-	<classpathentry kind="lib" path="/home/nl45056/Documents/Development/Apache/log4j/log4j-1.2.15.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Log4J"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
