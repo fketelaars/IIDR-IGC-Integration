@@ -55,7 +55,6 @@
 
 	<target name="jar" depends="compile">
 		<jar destfile="${lib.dir}/IIDR-IGS-Integration.jar" basedir="${build.dir}" includes="**" filesonly="true" />
-		<delete dir="${build.dir}" />
 	</target>
 
 </project>
