@@ -1,0 +1,94 @@
++----------------------------------------------------------------------------------------------------------------+
+| IIDR tree legend:                                                                                              |
+| d=Datastore,  s=Subscription, tm=Table Mapping, rs=Rules Set, rstm=Rules Set Table Mapping, cm=Column Mapping  |
++----------------------------------------------------------------------------------------------------------------+
+
+.
+|
+\------(d)CDC_DB2
+        +------(s)ARNHEM
+        |       \------(tm)CDCDEMO.CUSTOMER - CDCDEMO.CUSTOMER_BD
+        |               +------(cm)CUSTNO - CUSTNO
+        |               +------(cm)BRANCH - BRANCH
+        |               +------(cm)NAME1 - NAME1
+        |               +------(cm)NAME2 - NAME2
+        |               +------(cm)ADDRESS1 - ADDRESS1
+        |               +------(cm)ADDRESS2 - ADDRESS2
+        |               +------(cm)CITY - CITY
+        |               +------(cm)STATE - STATE
+        |               +------(cm)STATUS - STATUS
+        |               +------(cm)CRLIMIT - CRLIMIT
+        |               +------(cm)BALANCE - BALANCE
+        |               +------(cm)REPNO - REPNO
+        |               +------(cm)&USER - AUD_USER
+        |               +------(cm)&JOBUSER - AUD_JOBUSER
+        |               +------(cm)&TIMSTAMP - AUD_TIMESTAMP
+        |               +------(cm)&ENTTYP - AUD_ENTTYP
+        |               +------(cm)&CCID - AUD_SCN
+        |               +------(cm)&LIBRARY - AUD_LIBRARY
+        |               \------(cm)&OBJECT - AUD_OBJECT
+        \------(s)STRDB2
+                +------(tm)TELCO.CUST_THRESHOLD - CDCDEMO.DUMMY
+                |       \------(cm) - DUMMYID
+                \------(tm)TELCO.RATED_CDR - CDCDEMO.DUMMY
+                        \------(cm) - DUMMYID
+
+
++-----------------------------------------------------------+
+| IGC tree legend:                                          |
+| h=Host,  d=Database,  s=Schema, t=Table, c=Column, f=File |
++-----------------------------------------------------------+
+
+.
+|
+\------(h)LINUX-ISCDC
+        \------(d)CDC_DB2
+                +------(s)CDCDEMO
+                |       +------(t)CUSTOMER
+                |       |       +------(c)CUSTNO
+                |       |       +------(c)BRANCH
+                |       |       +------(c)NAME1
+                |       |       +------(c)NAME2
+                |       |       +------(c)ADDRESS1
+                |       |       +------(c)ADDRESS2
+                |       |       +------(c)CITY
+                |       |       +------(c)STATE
+                |       |       +------(c)STATUS
+                |       |       +------(c)CRLIMIT
+                |       |       +------(c)BALANCE
+                |       |       +------(c)REPNO
+                |       |       +------(c)&USER
+                |       |       +------(c)&JOBUSER
+                |       |       +------(c)&TIMSTAMP
+                |       |       +------(c)&ENTTYP
+                |       |       +------(c)&CCID
+                |       |       +------(c)&LIBRARY
+                |       |       \------(c)&OBJECT
+                |       +------(t)CUSTOMER_BD
+                |       |       +------(c)CUSTNO
+                |       |       +------(c)BRANCH
+                |       |       +------(c)NAME1
+                |       |       +------(c)NAME2
+                |       |       +------(c)ADDRESS1
+                |       |       +------(c)ADDRESS2
+                |       |       +------(c)CITY
+                |       |       +------(c)STATE
+                |       |       +------(c)STATUS
+                |       |       +------(c)CRLIMIT
+                |       |       +------(c)BALANCE
+                |       |       +------(c)REPNO
+                |       |       +------(c)AUD_USER
+                |       |       +------(c)AUD_JOBUSER
+                |       |       +------(c)AUD_TIMESTAMP
+                |       |       +------(c)AUD_ENTTYP
+                |       |       +------(c)AUD_SCN
+                |       |       +------(c)AUD_LIBRARY
+                |       |       \------(c)AUD_OBJECT
+                |       \------(t)DUMMY
+                |               +------(c)DUMMYID
+                |               \------(c)DUMMYID
+                \------(s)TELCO
+                        +------(t)CUST_THRESHOLD
+                        |       \------(c)
+                        \------(t)RATED_CDR
+                                \------(c)
