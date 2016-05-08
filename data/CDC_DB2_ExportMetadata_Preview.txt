@@ -42,7 +42,7 @@
 .
 |
 \------(h)LINUX-ISCDC
-        \------(d)CDC_DB2
+        \------(d)CDCDEMO
                 +------(s)CDCDEMO
                 |       +------(t)CUSTOMER
                 |       |       +------(c)CUSTNO

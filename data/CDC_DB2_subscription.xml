@@ -3,8 +3,8 @@
 	<assets>
 		<asset class="$IIDR-Datastore" repr="CDC_DB2" ID="ds1">
 			<attribute name="name" value="CDC_DB2" />
-			<attribute name="short_description" value="InfoSphere CDC DB2" />
-			<attribute name="long_description" value="InfoSphere CDC DB2" />
+			<attribute name="short_description" value="InfoSphere CDC DB2 DATABASE:CDCDEMO and this is a test with a very long string to see if it fits and so far it seems that it does fit and it is almost unlimited length so far I can see" />
+			<attribute name="long_description" value="InfoSphere CDC DB2 DATABASE:CDCDEMO and this is a test with a very long string to see if it fits and so far it seems that it does fit and it is almost unlimited length so far I can see" />
 			<attribute name="$host" value="LINUX-ISCDC" />
 			<attribute name="$port" value="10901" />
 			<attribute name="$version" value="V10R2M1T0BCDC_BR_CCTRJYPP_20_149" />

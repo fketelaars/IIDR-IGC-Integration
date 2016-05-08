@@ -4,8 +4,8 @@
 		<asset class="host" repr="LINUX-ISCDC" ID="host1">
 			<attribute name="name" value="LINUX-ISCDC"/>
 		</asset>
-		<asset class="database" repr="CDC_DB2" ID="db1">
-			<attribute name="name" value="CDC_DB2"/>
+		<asset class="database" repr="CDCDEMO" ID="db1">
+			<attribute name="name" value="CDCDEMO"/>
 			<reference name="host" assetIDs="host1"/>
 		</asset>
 		<asset class="database_schema" repr="CDCDEMO" ID="schm1"  matchByName="true">
