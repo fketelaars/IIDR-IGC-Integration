@@ -78,7 +78,7 @@ public class ExportMetadata {
 		assets = new Assets();
 
 		if (parms.debug) {
-			logger.setLevel(Level.DEBUG);
+			 logger.setLevel(Level.DEBUG);
 		}
 
 		// Collect the metadata
