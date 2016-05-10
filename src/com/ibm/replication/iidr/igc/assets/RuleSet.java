@@ -4,10 +4,13 @@ package com.ibm.replication.iidr.igc.assets;
 import java.text.MessageFormat;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.log4j.Logger;
 
 public class RuleSet {
 
 	public static final String IGC_CLASS_NAME = "$IIDR-RuleSet";
+	
+	final static Logger logger = Logger.getLogger(RuleSet.class.getName());
 	
 	private String id;
 	private String name;

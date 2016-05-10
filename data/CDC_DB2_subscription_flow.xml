@@ -192,16 +192,16 @@
 			<attribute name="name" value="DUMMYID"/>
 			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
-		<asset class="database_column" repr="" ID="col40"  matchByName="true">
-			<attribute name="name" value=""/>
+		<asset class="database_column" repr="MAX_MONTHLY_CHARGE" ID="col40"  matchByName="true">
+			<attribute name="name" value="MAX_MONTHLY_CHARGE"/>
 			<reference name="database_table_or_view" assetIDs="tbl3"/>
 		</asset>
 		<asset class="database_column" repr="DUMMYID" ID="col41"  matchByName="true">
 			<attribute name="name" value="DUMMYID"/>
 			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
-		<asset class="database_column" repr="" ID="col42"  matchByName="true">
-			<attribute name="name" value=""/>
+		<asset class="database_column" repr="DURATION_SECS" ID="col42"  matchByName="true">
+			<attribute name="name" value="DURATION_SECS"/>
 			<reference name="database_table_or_view" assetIDs="tbl5"/>
 		</asset>
 		<asset class="$IIDR-Datastore" repr="CDC_DB2" ID="ds1">
@@ -303,12 +303,12 @@
 			<attribute name="name" value="&amp;OBJECT - AUD_OBJECT" />
 			<reference name="$TableMapping" assetIDs="tm1" />
 		</asset>
-		<asset class="$IIDR-ColumnMapping" repr=" - DUMMYID" ID="cm20">
-			<attribute name="name" value=" - DUMMYID" />
+		<asset class="$IIDR-ColumnMapping" repr="MAX_MONTHLY_CHARGE - DUMMYID" ID="cm20">
+			<attribute name="name" value="MAX_MONTHLY_CHARGE - DUMMYID" />
 			<reference name="$TableMapping" assetIDs="tm2" />
 		</asset>
-		<asset class="$IIDR-ColumnMapping" repr=" - DUMMYID" ID="cm21">
-			<attribute name="name" value=" - DUMMYID" />
+		<asset class="$IIDR-ColumnMapping" repr="DURATION_SECS - DUMMYID" ID="cm21">
+			<attribute name="name" value="DURATION_SECS - DUMMYID" />
 			<reference name="$TableMapping" assetIDs="tm3" />
 		</asset>
 	</assets>

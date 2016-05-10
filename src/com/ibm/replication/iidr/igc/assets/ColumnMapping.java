@@ -4,10 +4,13 @@ package com.ibm.replication.iidr.igc.assets;
 import java.text.MessageFormat;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.log4j.Logger;
 
 public class ColumnMapping {
 
 	public static final String IGC_CLASS_NAME = "$IIDR-ColumnMapping";
+	
+	final static Logger logger = Logger.getLogger(ColumnMapping.class.getName());
 	
 	private String id;
 	private String source_column;

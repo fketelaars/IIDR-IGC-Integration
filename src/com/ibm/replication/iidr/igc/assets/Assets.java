@@ -1,5 +1,6 @@
 package com.ibm.replication.iidr.igc.assets;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
@@ -20,7 +21,7 @@ public class Assets {
 	private int ruleSetsID;
 	private int rsTableMappingsID;
 
-	final static Logger logger = Logger.getLogger("com.ibm.replication.iidr.metadata.ExportMetadata");
+	final static Logger logger = Logger.getLogger(Assets.class.getName());
 
 	public Assets() {
 		datastores = new ArrayList<Datastore>();
@@ -71,7 +72,8 @@ public class Assets {
 
 	public Datastore addDatastore(String name, String description, String hostName, String port, String version,
 			String platform, String database, String type) {
-		logger.debug("Adding datastore asset " + name + " with host name " + hostName + " and port " + port);
+		logger.debug(MessageFormat.format("Adding datastore asset {0} with host name {1} and port {2}",
+				new Object[] { name, hostName, new Integer(port) }));
 		Datastore returnDatastore = null;
 		for (Datastore datastore : datastores) {
 			if (datastore.getName().equals(name)) {
@@ -90,8 +92,9 @@ public class Assets {
 	public Subscription addSubscription(String name, String description, String sourceDatastoreName,
 			String targetDatastoreName, String sourceID, String hostName, String firewallPort, String persistency,
 			Datastore parentDatastore) {
-		logger.debug("Adding subscription asset " + name + " with source datastore " + sourceDatastoreName
-				+ " and target datastore " + targetDatastoreName);
+		logger.debug(
+				MessageFormat.format("Adding subscription asset {0} with source datastore {1} and target datastore {2}",
+						new Object[] { name, sourceDatastoreName, targetDatastoreName }));
 		Subscription returnSubscription = null;
 		for (Subscription subscription : subscriptions) {
 			if (subscription.getClass().equals(name)) {
@@ -112,8 +115,9 @@ public class Assets {
 	public TableMapping addTableToTableMapping(String source_schema, String source_table, String target_schema,
 			String target_table, String mapping_type, String method, String prevent_recursion, String parent_id) {
 		TableMapping returnTableMapping = null;
-		logger.debug("Adding table to table mapping for source table " + source_schema + "." + source_table
-				+ " to target table " + target_schema + "." + target_table);
+		logger.debug(
+				MessageFormat.format("Adding table to table mapping for source table {0}.{1} to target table {2}.{3}",
+						new Object[] { source_schema, source_table, target_schema, target_table }));
 		returnTableMapping = new TableMapping(getNextTableMappingID(), source_schema, source_table, target_schema,
 				target_table, mapping_type, method, prevent_recursion, parent_id);
 		tableMappings.add(returnTableMapping);
@@ -123,8 +127,8 @@ public class Assets {
 	public TableMapping addTableToFlatFileMapping(String source_schema, String source_table, String directory,
 			String mapping_type, String method, String prevent_recursion, String parent_id) {
 		TableMapping returnTableMapping = null;
-		logger.debug("Adding table to file mapping for source table " + source_schema + "." + source_table
-				+ " to directory " + directory);
+		logger.debug(MessageFormat.format("Adding table to table mapping for source table {0}.{1} to directory {3}",
+				new Object[] { source_schema, source_table, directory }));
 		returnTableMapping = new TableMapping(getNextTableMappingID(), source_schema, source_table, directory,
 				mapping_type, method, prevent_recursion, parent_id);
 		tableMappings.add(returnTableMapping);
@@ -134,7 +138,8 @@ public class Assets {
 	public ColumnMapping addColumnMapping(String source_column, String target_column, String initial_value,
 			String parent_id) {
 		ColumnMapping returnColumnMapping = null;
-		logger.debug("Adding source column " + source_column + " to target column " + target_column);
+		logger.debug(MessageFormat.format("Adding source column {0} to target column {1}",
+				new Object[] { source_column, target_column }));
 		returnColumnMapping = new ColumnMapping(getNextColumnMappingID(), source_column, target_column, initial_value,
 				parent_id);
 		columnMappings.add(returnColumnMapping);
@@ -144,7 +149,7 @@ public class Assets {
 	public RuleSet addRuleSet(String name, String schema, String include_tables, String exclude_tables,
 			String structure_only, String context, String parent_id) {
 		RuleSet returnRuleSet = null;
-		logger.debug("Adding rule set " + name);
+		logger.debug(MessageFormat.format("Adding rule set {0}", new Object[] { name }));
 		returnRuleSet = new RuleSet(getNextRuleSetID(), name, schema, include_tables, exclude_tables, structure_only,
 				context, parent_id);
 		ruleSets.add(returnRuleSet);
@@ -153,7 +158,8 @@ public class Assets {
 
 	public RSTableMapping addRSTableMapping(String schema, String table, String structure_only, String parent_id) {
 		RSTableMapping returnRSTableMapping = null;
-		logger.debug("Adding rule set table mapping for schema " + schema + " and table " + table);
+		logger.debug(MessageFormat.format("Adding rule set table mapping for schema {0} and table {1}",
+				new Object[] { schema, table }));
 		returnRSTableMapping = new RSTableMapping(getNextRSTableMappingID(), schema, table, structure_only, parent_id);
 		rsTableMappings.add(returnRSTableMapping);
 		return returnRSTableMapping;

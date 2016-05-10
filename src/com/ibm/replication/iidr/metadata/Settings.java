@@ -33,7 +33,7 @@ import com.datamirror.common.util.Encryptor;
 
 public class Settings {
 
-	final static Logger logger = Logger.getLogger("com.ibm.replication.cdc.metadata.ExportMetadata");
+	final static Logger logger = Logger.getLogger(Settings.class.getName());
 
 	// Access Server connection parameters
 	String asHostName = null;
@@ -80,7 +80,7 @@ public class Settings {
 		try {
 			asPassword = Encryptor.decodeAndDecrypt(encryptedAsPassword);
 		} catch (EncryptedDataException e) {
-			logger.info("Encrypting asPassword");
+			logger.debug("Encrypting asPassword");
 			asPassword = encryptedAsPassword;
 			encryptedAsPassword = Encryptor.encryptAndEncode(encryptedAsPassword);
 			config.setProperty("asPassword", encryptedAsPassword);
@@ -90,7 +90,7 @@ public class Settings {
 		try {
 			isPassword = Encryptor.decodeAndDecrypt(encryptedISPassword);
 		} catch (EncryptedDataException e) {
-			logger.info("Encrypting isPassword");
+			logger.debug("Encrypting isPassword");
 			isPassword = encryptedISPassword;
 			encryptedISPassword = Encryptor.encryptAndEncode(encryptedISPassword);
 			config.setProperty("isPassword", encryptedISPassword);

@@ -67,7 +67,9 @@ public class ExportMetadata {
 		System.setProperty("log4j.configuration",
 				new File(".", File.separatorChar + "conf" + File.separatorChar + "log4j.properties").toURI().toURL()
 						.toString());
-		logger = Logger.getLogger("com.ibm.replication.iidr.metadata.ExportMetadata");
+		// logger =
+		// Logger.getLogger("com.ibm.replication.iidr.metadata.ExportMetadata");
+		logger = Logger.getLogger(ExportMetadata.class.getName());
 
 		logger.info(MessageFormat.format("Starting metadata integration - v{0}.{1}",
 				new Object[] { ExportMetadata.VERSION, ExportMetadata.BUILD }));
@@ -77,8 +79,10 @@ public class ExportMetadata {
 
 		assets = new Assets();
 
+		// If the debug option was set, make sure that all debug messages are
+		// logged
 		if (parms.debug) {
-			 logger.setLevel(Level.DEBUG);
+			Logger.getRootLogger().setLevel(Level.DEBUG);
 		}
 
 		// Collect the metadata
@@ -113,7 +117,7 @@ public class ExportMetadata {
 		} else {
 			String previewFileName = settings.defaultDataPath + File.separator + parms.datastore
 					+ "_ExportMetadata_Preview.txt";
-			logger.debug("Writing output to " + previewFileName);
+			logger.debug(MessageFormat.format("Writing output to {0}", new Object[] { previewFileName }));
 			Utils.writeContentToFile(previewFileName, flows.preview());
 		}
 
@@ -131,40 +135,45 @@ public class ExportMetadata {
 			script.open();
 
 			// Connect to Access Server
-			logger.info("Connecting to Access Server");
+			logger.info(MessageFormat.format("Connecting to Access Server at host name {0} and port {1}",
+					new Object[] { settings.asHostName, settings.asPort }));
 			try {
 				script.execute(MessageFormat.format(
 						"connect server hostname {0} port {1,number,#} username {2} password {3}", new Object[] {
 								settings.asHostName, settings.asPort, settings.asUserName, settings.asPassword }));
 				// Connect to source datastore
-				logger.debug("Connecting to source datastore " + parms.datastore);
+				logger.debug(
+						MessageFormat.format("Connecting to source datastore {0}", new Object[] { parms.datastore }));
 				try {
 					script.execute(MessageFormat.format("connect datastore name {0} context source",
 							new Object[] { parms.datastore }));
 					// Get source datastore parameters and store in asset object
-					logger.debug("Getting attributes for source datastore " + parms.datastore);
+					logger.debug(MessageFormat.format("Getting attributes for source datastore {0}",
+							new Object[] { parms.datastore }));
 					Datastore sourceDatastore = addDatastoreToAssets(parms.datastore);
 					// Now process the specified (or all) subscriptions
 					collectSubscriptions(sourceDatastore);
 				} catch (EmbeddedScriptException e) {
-					throw new ExportMetadataException(
-							"Error connecting to datastore " + parms.datastore + ": " + script.getResultMessage());
+					throw new ExportMetadataException(MessageFormat.format("Error connecting to datastore {0}: {1}",
+							new Object[] { parms.datastore, script.getResultMessage() }));
 				}
 			} catch (EmbeddedScriptException e) {
-				throw new ExportMetadataException("Error connecting to Access Server: " + e.getMessage());
+				throw new ExportMetadataException(MessageFormat.format("Error connecting to Access Server: {0}",
+						new Object[] { script.getResultMessage() }));
 			}
 
-			logger.debug("Disconnecting from source datastore " + parms.datastore);
+			logger.debug(
+					MessageFormat.format("Disconnecting from source datastore {0}", new Object[] { parms.datastore }));
 			script.execute(MessageFormat.format("disconnect datastore name {0}", new Object[] { parms.datastore }));
 
 		} catch (EmbeddedScriptException e) {
 
 			switch (e.getResultCode()) {
 			case ERR_DATASTORE_UNREACHABLE:
-				logger.info("The datastore unreachable");
+				logger.warn(MessageFormat.format("Datastore {0} is unreachable", new Object[] { parms.datastore }));
 				break;
 			case ERR_DATASTORE_NOT_SUPPORTED:
-				logger.info("The datastore not supported");
+				logger.warn(MessageFormat.format("Datastore {0} is not supported", new Object[] { parms.datastore }));
 				break;
 			default:
 				throw e;
@@ -190,7 +199,8 @@ public class ExportMetadata {
 		// If no subscriptions were specified with the -s parameter, take all
 		// subscriptions from the datastore
 		if (parms.subscription == null) {
-			logger.info("Listing subscriptions for datastore " + sourceDatastore.getName());
+			logger.info(MessageFormat.format("Listing subscriptions for datastore {0}",
+					new Object[] { sourceDatastore.getName() }));
 			script.execute(MessageFormat.format("list subscriptions filter datastore name {0}",
 					new Object[] { sourceDatastore.getName() }));
 			ResultStringTable subscriptionsTable = (ResultStringTable) script.getResult();
@@ -201,10 +211,10 @@ public class ExportMetadata {
 		} else {
 			subscriptionNames = new ArrayList<String>(Arrays.asList(parms.subscription.split(",", -1)));
 		}
-		logger.debug("Subscription names: " + subscriptionNames);
 		// Now get details for all selected subscriptions
 		for (String subscriptionName : subscriptionNames) {
-			logger.debug("Getting details for subscription " + subscriptionName);
+			logger.debug(
+					MessageFormat.format("Getting details for subscription {0}", new Object[] { subscriptionName }));
 			try {
 				script.execute(MessageFormat.format("show subscription name {0}", new Object[] { subscriptionName }));
 				ResultStringKeyValues subscriptionInfo = (ResultStringKeyValues) script.getResult();
@@ -213,7 +223,8 @@ public class ExportMetadata {
 				// details have not been recorded yet
 				if (!subscriptionInfo.getValue("Source Datastore").equals(targetDatastoreName)) {
 					if (assets.datastoreExists(targetDatastoreName) == null) {
-						logger.debug("Connecting to target datastore " + targetDatastoreName);
+						logger.debug(MessageFormat.format("Connecting to target datastore {0}",
+								new Object[] { targetDatastoreName }));
 						script.execute(MessageFormat.format("connect datastore name {0} context target",
 								new Object[] { targetDatastoreName }));
 						addDatastoreToAssets(targetDatastoreName);
@@ -227,8 +238,9 @@ public class ExportMetadata {
 						subscriptionInfo.getValue("Firewall Port"), subscriptionInfo.getValue("Persistency"),
 						sourceDatastore);
 			} catch (EmbeddedScriptException e) {
-				logger.warn("Error while retrieving details for subscription " + subscriptionName
-						+ ". Subscription is ignored. Error: " + script.getResultMessage());
+				logger.warn(MessageFormat.format(
+						"Error while retrieving details for subscription {0}; subscription is ignored. Error: {1}",
+						new Object[] { subscriptionName, script.getResultMessage() }));
 			}
 		}
 		// Once all subscriptions have been retrieved, list the table mappings
@@ -248,10 +260,10 @@ public class ExportMetadata {
 				new Object[] { subscription.getName(), subscription.getTargetDatastoreName(),
 						assets.getDatastoreByID(subscription.getTargetDatastoreID()).getDatabase() }));
 
-		logger.debug("Target datastore for subscription " + subscription.getName() + " ");
 		if (assets.getDatastoreByID(subscription.getTargetDatastoreID()).getDatabase()
 				.equals(DATASTORE_TYPE_DATASTAGE)) {
-			logger.debug("Collecing DataStage table mappings for subscription " + subscription.getName());
+			logger.debug(MessageFormat.format("Collecing DataStage table mappings for subscription {0}",
+					new Object[] { subscription.getName() }));
 			script.execute(
 					MessageFormat.format("list table mappings name {0}", new Object[] { subscription.getName() }));
 			ResultStringTable mappingsTables = (ResultStringTable) script.getResult();
@@ -269,7 +281,8 @@ public class ExportMetadata {
 			}
 			// If the target datastore is a database, add table to table assets
 		} else {
-			logger.debug("Collecting database table mappings for subscription " + subscription.getName());
+			logger.debug(MessageFormat.format("Collecting database table mappings for subscription {0}",
+					new Object[] { subscription.getName() }));
 			script.execute(
 					MessageFormat.format("list table mappings name {0}", new Object[] { subscription.getName() }));
 			ResultStringTable mappingsTables = (ResultStringTable) script.getResult();
@@ -298,7 +311,8 @@ public class ExportMetadata {
 		script.execute(MessageFormat.format("select subscription name {0}", new Object[] { subscription.getName() }));
 		// Listing rule sets
 		try {
-			logger.info("Getting rule sets for subscription " + subscription.getName());
+			logger.info(MessageFormat.format("Getting rule sets for subscription {0}",
+					new Object[] { subscription.getName() }));
 			script.execute("list rule sets");
 			ResultStringTable ruleSets = (ResultStringTable) script.getResult();
 			for (int rsTableRow = 0; rsTableRow < ruleSets.getRowCount(); rsTableRow++) {
@@ -309,7 +323,8 @@ public class ExportMetadata {
 						subscription.getID());
 			}
 			// Listing rule set tables
-			logger.info("Listing rule set tables for subscription " + subscription.getName());
+			logger.info(MessageFormat.format("Listing rule set tables for subscription {0}",
+					new Object[] { subscription.getName() }));
 			ResultStringTable ruleSetTables = (ResultStringTable) script.getResult();
 			for (int rsTableRow = 0; rsTableRow < ruleSetTables.getRowCount(); rsTableRow++) {
 				assets.addRSTableMapping(ruleSetTables.getValueAt(rsTableRow, "SCHEMA"),
@@ -323,8 +338,8 @@ public class ExportMetadata {
 	}
 
 	private void collectColumnMappings(TableMapping tableMapping) throws EmbeddedScriptException {
-		logger.debug("Adding column mappings for table " + tableMapping.getSourceSchema() + "."
-				+ tableMapping.getSourceTable());
+		logger.debug(MessageFormat.format("Adding column mappings for table {0}.{1}",
+				new Object[] { tableMapping.getSourceSchema(), tableMapping.getSourceTable() }));
 		script.execute(MessageFormat.format(
 				"select table mapping sourceSchema {0} sourceTable {1} targetSchema {2} targetTable {3}",
 				new Object[] { tableMapping.getSourceSchema(), tableMapping.getSourceTable(),
@@ -347,13 +362,12 @@ public class ExportMetadata {
 			// args = "-p preview.txt -ds TESTDB,ORCL".split(" ");
 			// args = "-d -ub -p preview.txt -ds CDC_Oracle_cdcdemoa -sub
 			// SARC".split(" ");
-			args = "-d -ds CDC_DB2 -p preview.txt".split(" ");
+			args = "-d -ds CDC_DB2".split(" ");
 		}
 		try {
 			new ExportMetadata(args);
 		} catch (EmbeddedScriptException | ExportMetadataParmsException | ExportMetadataException
 				| MalformedURLException ese) {
-			ese.printStackTrace();
 			System.err.println("Error while exporting the metadata: " + ese.getMessage());
 		}
 

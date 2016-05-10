@@ -240,22 +240,22 @@
 			<attribute name="$initial_value" value="" />
 			<reference name="$TableMapping" assetIDs="tm1" />
 		</asset>
-		<asset class="$IIDR-ColumnMapping" repr=" - DUMMYID" ID="cm20">
-			<attribute name="name" value=" - DUMMYID" />
-			<attribute name="short_description" value="Column mapping from  DUMMYID" />
-			<attribute name="long_description" value="Column mapping from  DUMMYID" />
-			<attribute name="$source_column" value="" />
+		<asset class="$IIDR-ColumnMapping" repr="MAX_MONTHLY_CHARGE - DUMMYID" ID="cm20">
+			<attribute name="name" value="MAX_MONTHLY_CHARGE - DUMMYID" />
+			<attribute name="short_description" value="Column mapping from MAX_MONTHLY_CHARGE DUMMYID" />
+			<attribute name="long_description" value="Column mapping from MAX_MONTHLY_CHARGE DUMMYID" />
+			<attribute name="$source_column" value="MAX_MONTHLY_CHARGE" />
 			<attribute name="$target_column" value="DUMMYID" />
-			<attribute name="$initial_value" value="0" />
+			<attribute name="$initial_value" value="" />
 			<reference name="$TableMapping" assetIDs="tm2" />
 		</asset>
-		<asset class="$IIDR-ColumnMapping" repr=" - DUMMYID" ID="cm21">
-			<attribute name="name" value=" - DUMMYID" />
-			<attribute name="short_description" value="Column mapping from  DUMMYID" />
-			<attribute name="long_description" value="Column mapping from  DUMMYID" />
-			<attribute name="$source_column" value="" />
+		<asset class="$IIDR-ColumnMapping" repr="DURATION_SECS - DUMMYID" ID="cm21">
+			<attribute name="name" value="DURATION_SECS - DUMMYID" />
+			<attribute name="short_description" value="Column mapping from DURATION_SECS DUMMYID" />
+			<attribute name="long_description" value="Column mapping from DURATION_SECS DUMMYID" />
+			<attribute name="$source_column" value="DURATION_SECS" />
 			<attribute name="$target_column" value="DUMMYID" />
-			<attribute name="$initial_value" value="0" />
+			<attribute name="$initial_value" value="" />
 			<reference name="$TableMapping" assetIDs="tm3" />
 		</asset>
 	</assets>

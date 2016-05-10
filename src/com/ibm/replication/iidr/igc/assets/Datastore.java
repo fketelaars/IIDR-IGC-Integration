@@ -11,7 +11,7 @@ public class Datastore {
 	public static final String IGC_CLASS_NAME = "$IIDR-Datastore";
 	public static final String DATABASE_TYPE_DATASTAGE = "IBM InfoSphere DataStage";
 
-	final static Logger logger = Logger.getLogger("com.ibm.replication.iidr.metadata.ExportMetadata");
+	final static Logger logger = Logger.getLogger(Datastore.class.getName());
 
 	private String id;
 	private String name;

@@ -3,12 +3,16 @@ package com.ibm.replication.iidr.igc.assets;
 
 import java.text.MessageFormat;
 
+import org.apache.log4j.Logger;
+
 public class TableMapping {
 
 	
 	public static final String IGC_CLASS_NAME = "$IIDR-TableMapping";
 	public static final int MAPPING_TYPE_TABLE = 1;
 	public static final int MAPPING_TYPE_FLAT_FILE = 2;
+	
+	final static Logger logger = Logger.getLogger(TableMapping.class.getName());
 	
 	
 	private String id;
