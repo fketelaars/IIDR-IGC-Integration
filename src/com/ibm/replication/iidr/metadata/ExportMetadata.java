@@ -135,7 +135,7 @@ public class ExportMetadata {
 			script.open();
 
 			// Connect to Access Server
-			logger.info(MessageFormat.format("Connecting to Access Server at host name {0} and port {1}",
+			logger.info(MessageFormat.format("Connecting to Access Server at host name {0} and port {1,number,#}",
 					new Object[] { settings.asHostName, settings.asPort }));
 			try {
 				script.execute(MessageFormat.format(
@@ -362,7 +362,8 @@ public class ExportMetadata {
 			// args = "-p preview.txt -ds TESTDB,ORCL".split(" ");
 			// args = "-d -ub -p preview.txt -ds CDC_Oracle_cdcdemoa -sub
 			// SARC".split(" ");
-			args = "-d -ds CDC_DB2".split(" ");
+			//args = "-d -ds CDC_DB2".split(" ");
+			args = " -ds TESTDB -p".split(" ");
 		}
 		try {
 			new ExportMetadata(args);
