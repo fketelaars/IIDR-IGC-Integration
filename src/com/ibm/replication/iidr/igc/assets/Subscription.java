@@ -20,7 +20,6 @@ public class Subscription {
 	private String firewall_port;
 	private Boolean persistency;
 	private String parent_id;
-	private String source_datastore_id;
 	private String target_datastore_id;
 
 	public Subscription(String id, String name, String description, String source_datastore, String target_datastore,
@@ -36,7 +35,6 @@ public class Subscription {
 		this.firewall_port = firewall_port;
 		this.persistency = new Boolean(persistency);
 		this.parent_id = parent_id;
-		this.source_datastore_id = parent_id;
 		this.target_datastore_id = target_datastore_id;
 	}
 
