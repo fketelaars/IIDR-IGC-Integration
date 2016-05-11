@@ -232,20 +232,24 @@ public class ExportMetadata {
 				}
 				// If the code gets here, it means that info from the target
 				// datastore was retrieved
-				assets.addSubscription(subscriptionInfo.getValue("Name"), subscriptionInfo.getValue("Description"),
-						subscriptionInfo.getValue("Source Datastore"), subscriptionInfo.getValue("Target Datastore"),
-						subscriptionInfo.getValue("Source ID"), subscriptionInfo.getValue("TCP Host"),
-						subscriptionInfo.getValue("Firewall Port"), subscriptionInfo.getValue("Persistency"),
-						sourceDatastore);
+				Subscription subscription = assets.addSubscription(subscriptionInfo.getValue("Name"),
+						subscriptionInfo.getValue("Description"), subscriptionInfo.getValue("Source Datastore"),
+						subscriptionInfo.getValue("Target Datastore"), subscriptionInfo.getValue("Source ID"),
+						subscriptionInfo.getValue("TCP Host"), subscriptionInfo.getValue("Firewall Port"),
+						subscriptionInfo.getValue("Persistency"), sourceDatastore);
+				// Now get table mappings
+				collectTableMappings(subscription);
+				if (!subscriptionInfo.getValue("Source Datastore").equals(targetDatastoreName)) {
+					logger.debug(MessageFormat.format("Disconnecting from target datastore {0}",
+							new Object[] { targetDatastoreName }));
+					script.execute(MessageFormat.format("disconnect datastore name {0}",
+							new Object[] { targetDatastoreName }));
+				}
 			} catch (EmbeddedScriptException e) {
 				logger.warn(MessageFormat.format(
 						"Error while retrieving details for subscription {0}; subscription is ignored. Error: {1}",
 						new Object[] { subscriptionName, script.getResultMessage() }));
 			}
-		}
-		// Once all subscriptions have been retrieved, list the table mappings
-		for (Subscription subscription : assets.getSubscriptions()) {
-			collectTableMappings(subscription);
 		}
 	}
 
@@ -362,8 +366,8 @@ public class ExportMetadata {
 			// args = "-p preview.txt -ds TESTDB,ORCL".split(" ");
 			// args = "-d -ub -p preview.txt -ds CDC_Oracle_cdcdemoa -sub
 			// SARC".split(" ");
-			//args = "-d -ds CDC_DB2".split(" ");
-			args = " -ds TESTDB -p".split(" ");
+			args = "-d -ds CDC_DB2".split(" ");
+			// args = " -ds TESTDB -p".split(" ");
 		}
 		try {
 			new ExportMetadata(args);

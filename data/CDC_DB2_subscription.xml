@@ -12,6 +12,17 @@
 			<attribute name="$database" value="DB2 for LUW" />
 			<attribute name="$type" value="Dual" />
 		</asset>
+		<asset class="$IIDR-Datastore" repr="CDC_FlatFile" ID="ds2">
+			<attribute name="name" value="CDC_FlatFile" />
+			<attribute name="short_description" value="" />
+			<attribute name="long_description" value="" />
+			<attribute name="$host" value="LINUX-ISCDC" />
+			<attribute name="$port" value="10401" />
+			<attribute name="$version" value="V11R3M3T2BIIDR_Release_19" />
+			<attribute name="$platform" value="Java VM" />
+			<attribute name="$database" value="IBM InfoSphere DataStage" />
+			<attribute name="$type" value="Target" />
+		</asset>
 		<asset class="$IIDR-Subscription" repr="ARNHEM" ID="sub1">
 			<attribute name="name" value="ARNHEM" />
 			<attribute name="short_description" value="" />
@@ -24,7 +35,19 @@
 			<attribute name="$persistency" value="false" />
 			<reference name="$Datastore" assetIDs="ds1" />
 		</asset>
-		<asset class="$IIDR-Subscription" repr="STRDB2" ID="sub2">
+		<asset class="$IIDR-Subscription" repr="DS" ID="sub2">
+			<attribute name="name" value="DS" />
+			<attribute name="short_description" value="" />
+			<attribute name="long_description" value="" />
+			<attribute name="$source_datastore" value="CDC_DB2" />
+			<attribute name="$target_datastore" value="CDC_FLATFILE" />
+			<attribute name="$source_id" value="DS" />
+			<attribute name="$tcp_host" value="AUTO SELECT" />
+			<attribute name="$firewall_port" value="" />
+			<attribute name="$persistency" value="false" />
+			<reference name="$Datastore" assetIDs="ds1" />
+		</asset>
+		<asset class="$IIDR-Subscription" repr="STRDB2" ID="sub3">
 			<attribute name="name" value="STRDB2" />
 			<attribute name="short_description" value="" />
 			<attribute name="long_description" value="" />
@@ -47,7 +70,18 @@
 			<attribute name="$prevent_recursion" value="false" />
 			<reference name="$Subscription" assetIDs="sub1" />
 		</asset>
-		<asset class="$IIDR-TableMapping" repr="TELCO.CUST_THRESHOLD - CDCDEMO.DUMMY" ID="tm2">
+		<asset class="$IIDR-TableMapping" repr="CDCDEMO.CUSTOMER - /tmp/customer" ID="tm2">
+			<attribute name="name" value="CDCDEMO.CUSTOMER - /tmp/customer" />
+			<attribute name="short_description" value="Table mapping from CDCDEMO.CUSTOMER to /tmp/customer" />
+			<attribute name="long_description" value="Table mapping from CDCDEMO.CUSTOMER to /tmp/customer" />
+			<attribute name="$source" value="CDCDEMO.CUSTOMER" />
+			<attribute name="$target" value="/tmp/customer" />
+			<attribute name="$mapping_type" value="Flat File" />
+			<attribute name="$method" value="Mirror" />
+			<attribute name="$prevent_recursion" value="false" />
+			<reference name="$Subscription" assetIDs="sub2" />
+		</asset>
+		<asset class="$IIDR-TableMapping" repr="TELCO.CUST_THRESHOLD - CDCDEMO.DUMMY" ID="tm3">
 			<attribute name="name" value="TELCO.CUST_THRESHOLD - CDCDEMO.DUMMY" />
 			<attribute name="short_description" value="Table mapping from TELCO.CUST_THRESHOLD to CDCDEMO.DUMMY" />
 			<attribute name="long_description" value="Table mapping from TELCO.CUST_THRESHOLD to CDCDEMO.DUMMY" />
@@ -56,9 +90,9 @@
 			<attribute name="$mapping_type" value="Standard" />
 			<attribute name="$method" value="Mirror" />
 			<attribute name="$prevent_recursion" value="false" />
-			<reference name="$Subscription" assetIDs="sub2" />
+			<reference name="$Subscription" assetIDs="sub3" />
 		</asset>
-		<asset class="$IIDR-TableMapping" repr="TELCO.RATED_CDR - CDCDEMO.DUMMY" ID="tm3">
+		<asset class="$IIDR-TableMapping" repr="TELCO.RATED_CDR - CDCDEMO.DUMMY" ID="tm4">
 			<attribute name="name" value="TELCO.RATED_CDR - CDCDEMO.DUMMY" />
 			<attribute name="short_description" value="Table mapping from TELCO.RATED_CDR to CDCDEMO.DUMMY" />
 			<attribute name="long_description" value="Table mapping from TELCO.RATED_CDR to CDCDEMO.DUMMY" />
@@ -67,7 +101,7 @@
 			<attribute name="$mapping_type" value="Standard" />
 			<attribute name="$method" value="Mirror" />
 			<attribute name="$prevent_recursion" value="false" />
-			<reference name="$Subscription" assetIDs="sub2" />
+			<reference name="$Subscription" assetIDs="sub3" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="CUSTNO - CUSTNO" ID="cm1">
 			<attribute name="name" value="CUSTNO - CUSTNO" />
@@ -247,7 +281,7 @@
 			<attribute name="$source_column" value="MAX_MONTHLY_CHARGE" />
 			<attribute name="$target_column" value="DUMMYID" />
 			<attribute name="$initial_value" value="" />
-			<reference name="$TableMapping" assetIDs="tm2" />
+			<reference name="$TableMapping" assetIDs="tm3" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="DURATION_SECS - DUMMYID" ID="cm21">
 			<attribute name="name" value="DURATION_SECS - DUMMYID" />
@@ -256,8 +290,8 @@
 			<attribute name="$source_column" value="DURATION_SECS" />
 			<attribute name="$target_column" value="DUMMYID" />
 			<attribute name="$initial_value" value="" />
-			<reference name="$TableMapping" assetIDs="tm3" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 	</assets>
-	<importAction partialAssetIDs="ds1 " />
+	<importAction partialAssetIDs="ds1 ds2 " />
 </doc>

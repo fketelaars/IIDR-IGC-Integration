@@ -204,14 +204,26 @@
 			<attribute name="name" value="DURATION_SECS"/>
 			<reference name="database_table_or_view" assetIDs="tbl5"/>
 		</asset>
+		<asset class="data_file" repr="CUSTOMER.txt" ID="file1">
+			<attribute name="name" value="CUSTOMER.txt"/>
+			<attribute name="path" tag="true" value="/tmp/customer"/>
+			<reference name="parent_folder_or_host" assetIDs="host1"/>
+		</asset>
 		<asset class="$IIDR-Datastore" repr="CDC_DB2" ID="ds1">
 			<attribute name="name" value="CDC_DB2" />
+		</asset>
+		<asset class="$IIDR-Datastore" repr="CDC_FlatFile" ID="ds2">
+			<attribute name="name" value="CDC_FlatFile" />
 		</asset>
 		<asset class="$IIDR-Subscription" repr="ARNHEM" ID="sub1">
 			<attribute name="name" value="ARNHEM" />
 			<reference name="$Datastore" assetIDs="ds1" />
 		</asset>
-		<asset class="$IIDR-Subscription" repr="STRDB2" ID="sub2">
+		<asset class="$IIDR-Subscription" repr="DS" ID="sub2">
+			<attribute name="name" value="DS" />
+			<reference name="$Datastore" assetIDs="ds1" />
+		</asset>
+		<asset class="$IIDR-Subscription" repr="STRDB2" ID="sub3">
 			<attribute name="name" value="STRDB2" />
 			<reference name="$Datastore" assetIDs="ds1" />
 		</asset>
@@ -219,13 +231,17 @@
 			<attribute name="name" value="CDCDEMO.CUSTOMER - CDCDEMO.CUSTOMER_BD" />
 			<reference name="$Subscription" assetIDs="sub1" />
 		</asset>
-		<asset class="$IIDR-TableMapping" repr="TELCO.CUST_THRESHOLD - CDCDEMO.DUMMY" ID="tm2">
-			<attribute name="name" value="TELCO.CUST_THRESHOLD - CDCDEMO.DUMMY" />
+		<asset class="$IIDR-TableMapping" repr="CDCDEMO.CUSTOMER - /tmp/customer" ID="tm2">
+			<attribute name="name" value="CDCDEMO.CUSTOMER - /tmp/customer" />
 			<reference name="$Subscription" assetIDs="sub2" />
 		</asset>
-		<asset class="$IIDR-TableMapping" repr="TELCO.RATED_CDR - CDCDEMO.DUMMY" ID="tm3">
+		<asset class="$IIDR-TableMapping" repr="TELCO.CUST_THRESHOLD - CDCDEMO.DUMMY" ID="tm3">
+			<attribute name="name" value="TELCO.CUST_THRESHOLD - CDCDEMO.DUMMY" />
+			<reference name="$Subscription" assetIDs="sub3" />
+		</asset>
+		<asset class="$IIDR-TableMapping" repr="TELCO.RATED_CDR - CDCDEMO.DUMMY" ID="tm4">
 			<attribute name="name" value="TELCO.RATED_CDR - CDCDEMO.DUMMY" />
-			<reference name="$Subscription" assetIDs="sub2" />
+			<reference name="$Subscription" assetIDs="sub3" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="CUSTNO - CUSTNO" ID="cm1">
 			<attribute name="name" value="CUSTNO - CUSTNO" />
@@ -305,14 +321,17 @@
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="MAX_MONTHLY_CHARGE - DUMMYID" ID="cm20">
 			<attribute name="name" value="MAX_MONTHLY_CHARGE - DUMMYID" />
-			<reference name="$TableMapping" assetIDs="tm2" />
+			<reference name="$TableMapping" assetIDs="tm3" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="DURATION_SECS - DUMMYID" ID="cm21">
 			<attribute name="name" value="DURATION_SECS - DUMMYID" />
-			<reference name="$TableMapping" assetIDs="tm3" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 	</assets>
 	<flowUnits>
+		<flowUnit assetID="tm2" flowType="DESIGN">
+			<flow sourceIDs="tm2" targetIDs="file1"/>
+		</flowUnit>
 		<flowUnit assetID="cm1" flowType="DESIGN">
 			<flow sourceIDs="cm1" targetIDs="col1"/>
 			<flow sourceIDs="col2" targetIDs="cm1"/>
