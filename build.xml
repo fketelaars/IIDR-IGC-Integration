@@ -19,7 +19,7 @@
 	<property name="cdc_as_home" value="${CDC_AS_HOME}" />
 	<property name="cdc_as_lib.dir" value="${cdc_as_home}/lib" />
 	<property name="src.dir" value="src" />
-	<property name="build.dir" value="bin" />
+	<property name="build.dir" value="classes" />
 	<property name="lib.dir" value="lib" />
 	<property name="apache_lib.dir" value="lib/downloaded" />
 
@@ -53,8 +53,41 @@
 		</javac>
 	</target>
 
-	<target name="jar" depends="compile">
-		<jar destfile="${lib.dir}/IIDR-IGS-Integration.jar" basedir="${build.dir}" includes="**" filesonly="true" />
+	<target name="incrementBuild" depends="compile">
+		<tstamp>
+			<format property="buildDate" pattern="yyyy-MM-dd_HH.mm.ss_zzz" locale="en,IE" />
+		</tstamp>
+		<propertyfile file="conf/version.properties" comment="Build version info">
+			<entry key="buildDate" value="${buildDate}" />
+			<entry key="buildVersion" default="1" type="int" operation="=" />
+			<entry key="buildRelease" default="0" type="int" operation="=" />
+			<entry key="buildMod" default="0" type="int" operation="+" value="1" />
+		</propertyfile>
+		<replace file="conf/version.properties" token="@buildDate@" value="${buildDate}" />
+		<replace file="conf/version.properties" token="@buildVersion@" value="${buildVersion}" />
+		<replace file="conf/version.properties" token="@buildRelease@" value="${buildRelease}" />
+		<replace file="conf/version.properties" token="@buildMod@" value="${buildMod}" />
+	</target>
+
+	<target name="displayBuild" depends="incrementBuild">
+		<loadproperties srcFile="conf/version.properties" />
+		<echo>Build info: </echo>
+		<echo>Version: ${buildVersion}.${buildRelease}.${buildMod}</echo>
+		<echo>Date: ${buildDate}</echo>
+	</target>
+
+	<target name="jar" depends="displayBuild">
+		<manifest file="MANIFEST.MF">
+			<attribute name="Built-By" value="${user.name}" />
+			<attribute name="Implementation-Version" value="${buildVersion}.${buildRelease}.${buildMod}" />
+		</manifest>
+
+		<jar destfile="${lib.dir}/IIDR-IGS-Integration.jar" manifest="MANIFEST.MF">
+			<fileset dir="${build.dir}" />
+			<fileset dir="${src.dir}" includes="**/*.java" />
+		</jar>
+		<delete dir="${build.dir}" />
+		<delete file="MANIFEST.MF" />
 	</target>
 
 </project>

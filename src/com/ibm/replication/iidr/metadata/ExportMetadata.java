@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -43,9 +44,6 @@ import com.ibm.replication.iidr.igcrest.IGCRest;
 import com.ibm.replication.iidr.igcrest.IGCRestException;
 
 public class ExportMetadata {
-
-	final static String VERSION = "1.0";
-	final static String BUILD = "500";
 
 	final static int ERR_DATASTORE_UNREACHABLE = -2225;
 	final static int ERR_DATASTORE_NOT_SUPPORTED = -2202;
@@ -71,8 +69,15 @@ public class ExportMetadata {
 		// Logger.getLogger("com.ibm.replication.iidr.metadata.ExportMetadata");
 		logger = Logger.getLogger(ExportMetadata.class.getName());
 
-		logger.info(MessageFormat.format("Starting metadata integration - v{0}.{1}",
-				new Object[] { ExportMetadata.VERSION, ExportMetadata.BUILD }));
+		PropertiesConfiguration versionInfo = new PropertiesConfiguration(
+				"conf" + File.separator + "version.properties");
+
+		logger.info(
+				MessageFormat
+						.format("Version: {0}.{1}.{2}, date: {3}",
+								new Object[] { versionInfo.getString("buildVersion"),
+										versionInfo.getString("buildRelease"), versionInfo.getString("buildMod"),
+										versionInfo.getString("buildDate") }));
 
 		settings = new Settings("conf" + File.separator + this.getClass().getSimpleName() + ".properties");
 		parms = new ExportMetadataParms(commandLineArguments);
