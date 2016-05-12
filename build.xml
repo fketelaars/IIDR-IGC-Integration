@@ -82,7 +82,7 @@
 			<attribute name="Implementation-Version" value="${buildVersion}.${buildRelease}.${buildMod}" />
 		</manifest>
 
-		<jar destfile="${lib.dir}/IIDR-IGS-Integration.jar" manifest="MANIFEST.MF">
+		<jar destfile="${lib.dir}/IIDR-IGC-Integration.jar" manifest="MANIFEST.MF">
 			<fileset dir="${build.dir}" />
 			<fileset dir="${src.dir}" includes="**/*.java" />
 		</jar>
