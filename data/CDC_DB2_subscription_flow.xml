@@ -4,209 +4,423 @@
 		<asset class="host" repr="LINUX-ISCDC" ID="host1">
 			<attribute name="name" value="LINUX-ISCDC"/>
 		</asset>
-		<asset class="database" repr="CDCDEMO" ID="db1">
-			<attribute name="name" value="CDCDEMO"/>
+		<asset class="database" repr="DB2CDC" ID="db1">
+			<attribute name="name" value="DB2CDC"/>
 			<reference name="host" assetIDs="host1"/>
 		</asset>
-		<asset class="database_schema" repr="CDCDEMO" ID="schm1"  matchByName="true">
+		<asset class="database_schema" repr="AUDIT" ID="schm1"  matchByName="true">
+			<attribute name="name" value="AUDIT"/>
+			<reference name="database" assetIDs="db1"/>
+		</asset>
+		<asset class="database_schema" repr="CDCDEMO" ID="schm2"  matchByName="true">
 			<attribute name="name" value="CDCDEMO"/>
 			<reference name="database" assetIDs="db1"/>
 		</asset>
-		<asset class="database_schema" repr="TELCO" ID="schm2"  matchByName="true">
-			<attribute name="name" value="TELCO"/>
-			<reference name="database" assetIDs="db1"/>
+		<asset class="database_table" repr="CUSTOMER_AUD" ID="tbl1"  matchByName="true">
+			<attribute name="name" value="CUSTOMER_AUD"/>
+			<reference name="database_schema" assetIDs="schm1"/>
 		</asset>
-		<asset class="database_table" repr="CUSTOMER" ID="tbl1"  matchByName="true">
+		<asset class="database_table" repr="PRODUCT_AUD" ID="tbl2"  matchByName="true">
+			<attribute name="name" value="PRODUCT_AUD"/>
+			<reference name="database_schema" assetIDs="schm1"/>
+		</asset>
+		<asset class="database_table" repr="SALESREP_AUD" ID="tbl3"  matchByName="true">
+			<attribute name="name" value="SALESREP_AUD"/>
+			<reference name="database_schema" assetIDs="schm1"/>
+		</asset>
+		<asset class="database_table" repr="CUSTOMER" ID="tbl4"  matchByName="true">
 			<attribute name="name" value="CUSTOMER"/>
-			<reference name="database_schema" assetIDs="schm1"/>
-		</asset>
-		<asset class="database_table" repr="CUSTOMER_BD" ID="tbl2"  matchByName="true">
-			<attribute name="name" value="CUSTOMER_BD"/>
-			<reference name="database_schema" assetIDs="schm1"/>
-		</asset>
-		<asset class="database_table" repr="CUST_THRESHOLD" ID="tbl3"  matchByName="true">
-			<attribute name="name" value="CUST_THRESHOLD"/>
 			<reference name="database_schema" assetIDs="schm2"/>
 		</asset>
-		<asset class="database_table" repr="DUMMY" ID="tbl4"  matchByName="true">
-			<attribute name="name" value="DUMMY"/>
-			<reference name="database_schema" assetIDs="schm1"/>
+		<asset class="database_table" repr="PRODUCT" ID="tbl5"  matchByName="true">
+			<attribute name="name" value="PRODUCT"/>
+			<reference name="database_schema" assetIDs="schm2"/>
 		</asset>
-		<asset class="database_table" repr="RATED_CDR" ID="tbl5"  matchByName="true">
-			<attribute name="name" value="RATED_CDR"/>
+		<asset class="database_table" repr="SALESREP" ID="tbl6"  matchByName="true">
+			<attribute name="name" value="SALESREP"/>
 			<reference name="database_schema" assetIDs="schm2"/>
 		</asset>
 		<asset class="database_column" repr="CUSTNO" ID="col1"  matchByName="true">
 			<attribute name="name" value="CUSTNO"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="CUSTNO" ID="col2"  matchByName="true">
 			<attribute name="name" value="CUSTNO"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
 		<asset class="database_column" repr="BRANCH" ID="col3"  matchByName="true">
 			<attribute name="name" value="BRANCH"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="BRANCH" ID="col4"  matchByName="true">
 			<attribute name="name" value="BRANCH"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
 		<asset class="database_column" repr="NAME1" ID="col5"  matchByName="true">
 			<attribute name="name" value="NAME1"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="NAME1" ID="col6"  matchByName="true">
 			<attribute name="name" value="NAME1"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
 		<asset class="database_column" repr="NAME2" ID="col7"  matchByName="true">
 			<attribute name="name" value="NAME2"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="NAME2" ID="col8"  matchByName="true">
 			<attribute name="name" value="NAME2"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
 		<asset class="database_column" repr="ADDRESS1" ID="col9"  matchByName="true">
 			<attribute name="name" value="ADDRESS1"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="ADDRESS1" ID="col10"  matchByName="true">
 			<attribute name="name" value="ADDRESS1"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
 		<asset class="database_column" repr="ADDRESS2" ID="col11"  matchByName="true">
 			<attribute name="name" value="ADDRESS2"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="ADDRESS2" ID="col12"  matchByName="true">
 			<attribute name="name" value="ADDRESS2"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
 		<asset class="database_column" repr="CITY" ID="col13"  matchByName="true">
 			<attribute name="name" value="CITY"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="CITY" ID="col14"  matchByName="true">
 			<attribute name="name" value="CITY"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
 		<asset class="database_column" repr="STATE" ID="col15"  matchByName="true">
 			<attribute name="name" value="STATE"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="STATE" ID="col16"  matchByName="true">
 			<attribute name="name" value="STATE"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
 		<asset class="database_column" repr="STATUS" ID="col17"  matchByName="true">
 			<attribute name="name" value="STATUS"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="STATUS" ID="col18"  matchByName="true">
 			<attribute name="name" value="STATUS"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
 		<asset class="database_column" repr="CRLIMIT" ID="col19"  matchByName="true">
 			<attribute name="name" value="CRLIMIT"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="CRLIMIT" ID="col20"  matchByName="true">
 			<attribute name="name" value="CRLIMIT"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
 		<asset class="database_column" repr="BALANCE" ID="col21"  matchByName="true">
 			<attribute name="name" value="BALANCE"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="BALANCE" ID="col22"  matchByName="true">
 			<attribute name="name" value="BALANCE"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
 		<asset class="database_column" repr="REPNO" ID="col23"  matchByName="true">
 			<attribute name="name" value="REPNO"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="REPNO" ID="col24"  matchByName="true">
 			<attribute name="name" value="REPNO"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
 		<asset class="database_column" repr="AUD_USER" ID="col25"  matchByName="true">
 			<attribute name="name" value="AUD_USER"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="&amp;USER" ID="col26"  matchByName="true">
 			<attribute name="name" value="&amp;USER"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
-		<asset class="database_column" repr="AUD_JOBUSER" ID="col27"  matchByName="true">
-			<attribute name="name" value="AUD_JOBUSER"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		<asset class="database_column" repr="AUD_JOBU" ID="col27"  matchByName="true">
+			<attribute name="name" value="AUD_JOBU"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="&amp;JOBUSER" ID="col28"  matchByName="true">
 			<attribute name="name" value="&amp;JOBUSER"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
-		<asset class="database_column" repr="AUD_TIMESTAMP" ID="col29"  matchByName="true">
-			<attribute name="name" value="AUD_TIMESTAMP"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		<asset class="database_column" repr="AUD_TS" ID="col29"  matchByName="true">
+			<attribute name="name" value="AUD_TS"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="&amp;TIMSTAMP" ID="col30"  matchByName="true">
 			<attribute name="name" value="&amp;TIMSTAMP"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
 		<asset class="database_column" repr="AUD_ENTTYP" ID="col31"  matchByName="true">
 			<attribute name="name" value="AUD_ENTTYP"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="&amp;ENTTYP" ID="col32"  matchByName="true">
 			<attribute name="name" value="&amp;ENTTYP"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
+			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
 		<asset class="database_column" repr="AUD_SCN" ID="col33"  matchByName="true">
 			<attribute name="name" value="AUD_SCN"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
 		<asset class="database_column" repr="&amp;CCID" ID="col34"  matchByName="true">
 			<attribute name="name" value="&amp;CCID"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
-		</asset>
-		<asset class="database_column" repr="AUD_LIBRARY" ID="col35"  matchByName="true">
-			<attribute name="name" value="AUD_LIBRARY"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
-		</asset>
-		<asset class="database_column" repr="&amp;LIBRARY" ID="col36"  matchByName="true">
-			<attribute name="name" value="&amp;LIBRARY"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
-		</asset>
-		<asset class="database_column" repr="AUD_OBJECT" ID="col37"  matchByName="true">
-			<attribute name="name" value="AUD_OBJECT"/>
-			<reference name="database_table_or_view" assetIDs="tbl2"/>
-		</asset>
-		<asset class="database_column" repr="&amp;OBJECT" ID="col38"  matchByName="true">
-			<attribute name="name" value="&amp;OBJECT"/>
-			<reference name="database_table_or_view" assetIDs="tbl1"/>
-		</asset>
-		<asset class="database_column" repr="DUMMYID" ID="col39"  matchByName="true">
-			<attribute name="name" value="DUMMYID"/>
 			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
-		<asset class="database_column" repr="MAX_MONTHLY_CHARGE" ID="col40"  matchByName="true">
-			<attribute name="name" value="MAX_MONTHLY_CHARGE"/>
-			<reference name="database_table_or_view" assetIDs="tbl3"/>
+		<asset class="database_column" repr="AUD_RRN" ID="col35"  matchByName="true">
+			<attribute name="name" value="AUD_RRN"/>
+			<reference name="database_table_or_view" assetIDs="tbl1"/>
 		</asset>
-		<asset class="database_column" repr="DUMMYID" ID="col41"  matchByName="true">
-			<attribute name="name" value="DUMMYID"/>
+		<asset class="database_column" repr="&amp;CNTRRN" ID="col36"  matchByName="true">
+			<attribute name="name" value="&amp;CNTRRN"/>
 			<reference name="database_table_or_view" assetIDs="tbl4"/>
 		</asset>
-		<asset class="database_column" repr="DURATION_SECS" ID="col42"  matchByName="true">
-			<attribute name="name" value="DURATION_SECS"/>
+		<asset class="database_column" repr="PRODUCTID" ID="col37"  matchByName="true">
+			<attribute name="name" value="PRODUCTID"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="PRODUCTID" ID="col38"  matchByName="true">
+			<attribute name="name" value="PRODUCTID"/>
 			<reference name="database_table_or_view" assetIDs="tbl5"/>
 		</asset>
-		<asset class="data_file" repr="CUSTOMER.txt" ID="file1">
-			<attribute name="name" value="CUSTOMER.txt"/>
-			<attribute name="path" tag="true" value="/tmp/customer"/>
+		<asset class="database_column" repr="DESCRIPTN" ID="col39"  matchByName="true">
+			<attribute name="name" value="DESCRIPTN"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="DESCRIPTN" ID="col40"  matchByName="true">
+			<attribute name="name" value="DESCRIPTN"/>
+			<reference name="database_table_or_view" assetIDs="tbl5"/>
+		</asset>
+		<asset class="database_column" repr="LOCATION" ID="col41"  matchByName="true">
+			<attribute name="name" value="LOCATION"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="LOCATION" ID="col42"  matchByName="true">
+			<attribute name="name" value="LOCATION"/>
+			<reference name="database_table_or_view" assetIDs="tbl5"/>
+		</asset>
+		<asset class="database_column" repr="STATUS" ID="col43"  matchByName="true">
+			<attribute name="name" value="STATUS"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="STATUS" ID="col44"  matchByName="true">
+			<attribute name="name" value="STATUS"/>
+			<reference name="database_table_or_view" assetIDs="tbl5"/>
+		</asset>
+		<asset class="database_column" repr="UNITPRICE" ID="col45"  matchByName="true">
+			<attribute name="name" value="UNITPRICE"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="UNITPRICE" ID="col46"  matchByName="true">
+			<attribute name="name" value="UNITPRICE"/>
+			<reference name="database_table_or_view" assetIDs="tbl5"/>
+		</asset>
+		<asset class="database_column" repr="UNITCOST" ID="col47"  matchByName="true">
+			<attribute name="name" value="UNITCOST"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="UNITCOST" ID="col48"  matchByName="true">
+			<attribute name="name" value="UNITCOST"/>
+			<reference name="database_table_or_view" assetIDs="tbl5"/>
+		</asset>
+		<asset class="database_column" repr="QTYONHAND" ID="col49"  matchByName="true">
+			<attribute name="name" value="QTYONHAND"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="QTYONHAND" ID="col50"  matchByName="true">
+			<attribute name="name" value="QTYONHAND"/>
+			<reference name="database_table_or_view" assetIDs="tbl5"/>
+		</asset>
+		<asset class="database_column" repr="QTYALLOC" ID="col51"  matchByName="true">
+			<attribute name="name" value="QTYALLOC"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="QTYALLOC" ID="col52"  matchByName="true">
+			<attribute name="name" value="QTYALLOC"/>
+			<reference name="database_table_or_view" assetIDs="tbl5"/>
+		</asset>
+		<asset class="database_column" repr="QTYMINORD" ID="col53"  matchByName="true">
+			<attribute name="name" value="QTYMINORD"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="QTYMINORD" ID="col54"  matchByName="true">
+			<attribute name="name" value="QTYMINORD"/>
+			<reference name="database_table_or_view" assetIDs="tbl5"/>
+		</asset>
+		<asset class="database_column" repr="AUD_USER" ID="col55"  matchByName="true">
+			<attribute name="name" value="AUD_USER"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="&amp;USER" ID="col56"  matchByName="true">
+			<attribute name="name" value="&amp;USER"/>
+			<reference name="database_table_or_view" assetIDs="tbl5"/>
+		</asset>
+		<asset class="database_column" repr="AUD_JOBU" ID="col57"  matchByName="true">
+			<attribute name="name" value="AUD_JOBU"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="&amp;JOBUSER" ID="col58"  matchByName="true">
+			<attribute name="name" value="&amp;JOBUSER"/>
+			<reference name="database_table_or_view" assetIDs="tbl5"/>
+		</asset>
+		<asset class="database_column" repr="AUD_TS" ID="col59"  matchByName="true">
+			<attribute name="name" value="AUD_TS"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="&amp;TIMSTAMP" ID="col60"  matchByName="true">
+			<attribute name="name" value="&amp;TIMSTAMP"/>
+			<reference name="database_table_or_view" assetIDs="tbl5"/>
+		</asset>
+		<asset class="database_column" repr="AUD_ENTTYP" ID="col61"  matchByName="true">
+			<attribute name="name" value="AUD_ENTTYP"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="&amp;ENTTYP" ID="col62"  matchByName="true">
+			<attribute name="name" value="&amp;ENTTYP"/>
+			<reference name="database_table_or_view" assetIDs="tbl5"/>
+		</asset>
+		<asset class="database_column" repr="AUD_SCN" ID="col63"  matchByName="true">
+			<attribute name="name" value="AUD_SCN"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="&amp;CCID" ID="col64"  matchByName="true">
+			<attribute name="name" value="&amp;CCID"/>
+			<reference name="database_table_or_view" assetIDs="tbl5"/>
+		</asset>
+		<asset class="database_column" repr="AUD_RRN" ID="col65"  matchByName="true">
+			<attribute name="name" value="AUD_RRN"/>
+			<reference name="database_table_or_view" assetIDs="tbl2"/>
+		</asset>
+		<asset class="database_column" repr="&amp;CNTRRN" ID="col66"  matchByName="true">
+			<attribute name="name" value="&amp;CNTRRN"/>
+			<reference name="database_table_or_view" assetIDs="tbl5"/>
+		</asset>
+		<asset class="database_column" repr="REPNO" ID="col67"  matchByName="true">
+			<attribute name="name" value="REPNO"/>
+			<reference name="database_table_or_view" assetIDs="tbl3"/>
+		</asset>
+		<asset class="database_column" repr="REPNO" ID="col68"  matchByName="true">
+			<attribute name="name" value="REPNO"/>
+			<reference name="database_table_or_view" assetIDs="tbl6"/>
+		</asset>
+		<asset class="database_column" repr="NAME1ST" ID="col69"  matchByName="true">
+			<attribute name="name" value="NAME1ST"/>
+			<reference name="database_table_or_view" assetIDs="tbl3"/>
+		</asset>
+		<asset class="database_column" repr="NAME1ST" ID="col70"  matchByName="true">
+			<attribute name="name" value="NAME1ST"/>
+			<reference name="database_table_or_view" assetIDs="tbl6"/>
+		</asset>
+		<asset class="database_column" repr="NAME2ND" ID="col71"  matchByName="true">
+			<attribute name="name" value="NAME2ND"/>
+			<reference name="database_table_or_view" assetIDs="tbl3"/>
+		</asset>
+		<asset class="database_column" repr="NAME2ND" ID="col72"  matchByName="true">
+			<attribute name="name" value="NAME2ND"/>
+			<reference name="database_table_or_view" assetIDs="tbl6"/>
+		</asset>
+		<asset class="database_column" repr="NAME3RD" ID="col73"  matchByName="true">
+			<attribute name="name" value="NAME3RD"/>
+			<reference name="database_table_or_view" assetIDs="tbl3"/>
+		</asset>
+		<asset class="database_column" repr="NAME3RD" ID="col74"  matchByName="true">
+			<attribute name="name" value="NAME3RD"/>
+			<reference name="database_table_or_view" assetIDs="tbl6"/>
+		</asset>
+		<asset class="database_column" repr="AMTMTD" ID="col75"  matchByName="true">
+			<attribute name="name" value="AMTMTD"/>
+			<reference name="database_table_or_view" assetIDs="tbl3"/>
+		</asset>
+		<asset class="database_column" repr="AMTMTD" ID="col76"  matchByName="true">
+			<attribute name="name" value="AMTMTD"/>
+			<reference name="database_table_or_view" assetIDs="tbl6"/>
+		</asset>
+		<asset class="database_column" repr="AMTYTD" ID="col77"  matchByName="true">
+			<attribute name="name" value="AMTYTD"/>
+			<reference name="database_table_or_view" assetIDs="tbl3"/>
+		</asset>
+		<asset class="database_column" repr="AMTYTD" ID="col78"  matchByName="true">
+			<attribute name="name" value="AMTYTD"/>
+			<reference name="database_table_or_view" assetIDs="tbl6"/>
+		</asset>
+		<asset class="database_column" repr="AMTLTD" ID="col79"  matchByName="true">
+			<attribute name="name" value="AMTLTD"/>
+			<reference name="database_table_or_view" assetIDs="tbl3"/>
+		</asset>
+		<asset class="database_column" repr="AMTLTD" ID="col80"  matchByName="true">
+			<attribute name="name" value="AMTLTD"/>
+			<reference name="database_table_or_view" assetIDs="tbl6"/>
+		</asset>
+		<asset class="database_column" repr="AUD_USER" ID="col81"  matchByName="true">
+			<attribute name="name" value="AUD_USER"/>
+			<reference name="database_table_or_view" assetIDs="tbl3"/>
+		</asset>
+		<asset class="database_column" repr="&amp;USER" ID="col82"  matchByName="true">
+			<attribute name="name" value="&amp;USER"/>
+			<reference name="database_table_or_view" assetIDs="tbl6"/>
+		</asset>
+		<asset class="database_column" repr="AUD_JOBU" ID="col83"  matchByName="true">
+			<attribute name="name" value="AUD_JOBU"/>
+			<reference name="database_table_or_view" assetIDs="tbl3"/>
+		</asset>
+		<asset class="database_column" repr="&amp;JOBUSER" ID="col84"  matchByName="true">
+			<attribute name="name" value="&amp;JOBUSER"/>
+			<reference name="database_table_or_view" assetIDs="tbl6"/>
+		</asset>
+		<asset class="database_column" repr="AUD_TS" ID="col85"  matchByName="true">
+			<attribute name="name" value="AUD_TS"/>
+			<reference name="database_table_or_view" assetIDs="tbl3"/>
+		</asset>
+		<asset class="database_column" repr="&amp;TIMSTAMP" ID="col86"  matchByName="true">
+			<attribute name="name" value="&amp;TIMSTAMP"/>
+			<reference name="database_table_or_view" assetIDs="tbl6"/>
+		</asset>
+		<asset class="database_column" repr="AUD_ENTTYP" ID="col87"  matchByName="true">
+			<attribute name="name" value="AUD_ENTTYP"/>
+			<reference name="database_table_or_view" assetIDs="tbl3"/>
+		</asset>
+		<asset class="database_column" repr="&amp;ENTTYP" ID="col88"  matchByName="true">
+			<attribute name="name" value="&amp;ENTTYP"/>
+			<reference name="database_table_or_view" assetIDs="tbl6"/>
+		</asset>
+		<asset class="database_column" repr="AUD_SCN" ID="col89"  matchByName="true">
+			<attribute name="name" value="AUD_SCN"/>
+			<reference name="database_table_or_view" assetIDs="tbl3"/>
+		</asset>
+		<asset class="database_column" repr="&amp;CCID" ID="col90"  matchByName="true">
+			<attribute name="name" value="&amp;CCID"/>
+			<reference name="database_table_or_view" assetIDs="tbl6"/>
+		</asset>
+		<asset class="database_column" repr="AUD_RRN" ID="col91"  matchByName="true">
+			<attribute name="name" value="AUD_RRN"/>
+			<reference name="database_table_or_view" assetIDs="tbl3"/>
+		</asset>
+		<asset class="database_column" repr="&amp;CNTRRN" ID="col92"  matchByName="true">
+			<attribute name="name" value="&amp;CNTRRN"/>
+			<reference name="database_table_or_view" assetIDs="tbl6"/>
+		</asset>
+		<asset class="data_file" repr="CUSTOMER_AUD.txt" ID="file1">
+			<attribute name="name" value="CUSTOMER_AUD.txt"/>
+			<attribute name="path" tag="true" value="/home/iscdcds/staging/customer"/>
+			<reference name="parent_folder_or_host" assetIDs="host1"/>
+		</asset>
+		<asset class="data_file" repr="PRODUCT_AUD.txt" ID="file2">
+			<attribute name="name" value="PRODUCT_AUD.txt"/>
+			<attribute name="path" tag="true" value="/home/iscdcds/staging/product"/>
+			<reference name="parent_folder_or_host" assetIDs="host1"/>
+		</asset>
+		<asset class="data_file" repr="SALESREP_AUD.txt" ID="file3">
+			<attribute name="name" value="SALESREP_AUD.txt"/>
+			<attribute name="path" tag="true" value="/home/iscdcds/staging/salesrep"/>
 			<reference name="parent_folder_or_host" assetIDs="host1"/>
 		</asset>
 		<asset class="$IIDR-Datastore" repr="CDC_DB2" ID="ds1">
@@ -215,122 +429,235 @@
 		<asset class="$IIDR-Datastore" repr="CDC_FlatFile" ID="ds2">
 			<attribute name="name" value="CDC_FlatFile" />
 		</asset>
-		<asset class="$IIDR-Subscription" repr="ARNHEM" ID="sub1">
-			<attribute name="name" value="ARNHEM" />
+		<asset class="$IIDR-Subscription" repr="AUD_FF" ID="sub1">
+			<attribute name="name" value="AUD_FF" />
 			<reference name="$Datastore" assetIDs="ds1" />
 		</asset>
-		<asset class="$IIDR-Subscription" repr="DS" ID="sub2">
-			<attribute name="name" value="DS" />
+		<asset class="$IIDR-Subscription" repr="DB2_AUD" ID="sub2">
+			<attribute name="name" value="DB2_AUD" />
 			<reference name="$Datastore" assetIDs="ds1" />
 		</asset>
-		<asset class="$IIDR-Subscription" repr="STRDB2" ID="sub3">
-			<attribute name="name" value="STRDB2" />
-			<reference name="$Datastore" assetIDs="ds1" />
-		</asset>
-		<asset class="$IIDR-TableMapping" repr="CDCDEMO.CUSTOMER - CDCDEMO.CUSTOMER_BD" ID="tm1">
-			<attribute name="name" value="CDCDEMO.CUSTOMER - CDCDEMO.CUSTOMER_BD" />
+		<asset class="$IIDR-TableMapping" repr="AUDIT.CUSTOMER_AUD - /home/iscdcds/staging/customer" ID="tm1">
+			<attribute name="name" value="AUDIT.CUSTOMER_AUD - /home/iscdcds/staging/customer" />
 			<reference name="$Subscription" assetIDs="sub1" />
 		</asset>
-		<asset class="$IIDR-TableMapping" repr="CDCDEMO.CUSTOMER - /tmp/customer" ID="tm2">
-			<attribute name="name" value="CDCDEMO.CUSTOMER - /tmp/customer" />
+		<asset class="$IIDR-TableMapping" repr="AUDIT.PRODUCT_AUD - /home/iscdcds/staging/product" ID="tm2">
+			<attribute name="name" value="AUDIT.PRODUCT_AUD - /home/iscdcds/staging/product" />
+			<reference name="$Subscription" assetIDs="sub1" />
+		</asset>
+		<asset class="$IIDR-TableMapping" repr="AUDIT.SALESREP_AUD - /home/iscdcds/staging/salesrep" ID="tm3">
+			<attribute name="name" value="AUDIT.SALESREP_AUD - /home/iscdcds/staging/salesrep" />
+			<reference name="$Subscription" assetIDs="sub1" />
+		</asset>
+		<asset class="$IIDR-TableMapping" repr="CDCDEMO.CUSTOMER - AUDIT.CUSTOMER_AUD" ID="tm4">
+			<attribute name="name" value="CDCDEMO.CUSTOMER - AUDIT.CUSTOMER_AUD" />
 			<reference name="$Subscription" assetIDs="sub2" />
 		</asset>
-		<asset class="$IIDR-TableMapping" repr="TELCO.CUST_THRESHOLD - CDCDEMO.DUMMY" ID="tm3">
-			<attribute name="name" value="TELCO.CUST_THRESHOLD - CDCDEMO.DUMMY" />
-			<reference name="$Subscription" assetIDs="sub3" />
+		<asset class="$IIDR-TableMapping" repr="CDCDEMO.PRODUCT - AUDIT.PRODUCT_AUD" ID="tm5">
+			<attribute name="name" value="CDCDEMO.PRODUCT - AUDIT.PRODUCT_AUD" />
+			<reference name="$Subscription" assetIDs="sub2" />
 		</asset>
-		<asset class="$IIDR-TableMapping" repr="TELCO.RATED_CDR - CDCDEMO.DUMMY" ID="tm4">
-			<attribute name="name" value="TELCO.RATED_CDR - CDCDEMO.DUMMY" />
-			<reference name="$Subscription" assetIDs="sub3" />
+		<asset class="$IIDR-TableMapping" repr="CDCDEMO.SALESREP - AUDIT.SALESREP_AUD" ID="tm6">
+			<attribute name="name" value="CDCDEMO.SALESREP - AUDIT.SALESREP_AUD" />
+			<reference name="$Subscription" assetIDs="sub2" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="CUSTNO - CUSTNO" ID="cm1">
 			<attribute name="name" value="CUSTNO - CUSTNO" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="BRANCH - BRANCH" ID="cm2">
 			<attribute name="name" value="BRANCH - BRANCH" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="NAME1 - NAME1" ID="cm3">
 			<attribute name="name" value="NAME1 - NAME1" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="NAME2 - NAME2" ID="cm4">
 			<attribute name="name" value="NAME2 - NAME2" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="ADDRESS1 - ADDRESS1" ID="cm5">
 			<attribute name="name" value="ADDRESS1 - ADDRESS1" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="ADDRESS2 - ADDRESS2" ID="cm6">
 			<attribute name="name" value="ADDRESS2 - ADDRESS2" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="CITY - CITY" ID="cm7">
 			<attribute name="name" value="CITY - CITY" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="STATE - STATE" ID="cm8">
 			<attribute name="name" value="STATE - STATE" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="STATUS - STATUS" ID="cm9">
 			<attribute name="name" value="STATUS - STATUS" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="CRLIMIT - CRLIMIT" ID="cm10">
 			<attribute name="name" value="CRLIMIT - CRLIMIT" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="BALANCE - BALANCE" ID="cm11">
 			<attribute name="name" value="BALANCE - BALANCE" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="REPNO - REPNO" ID="cm12">
 			<attribute name="name" value="REPNO - REPNO" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="&amp;USER - AUD_USER" ID="cm13">
 			<attribute name="name" value="&amp;USER - AUD_USER" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
-		<asset class="$IIDR-ColumnMapping" repr="&amp;JOBUSER - AUD_JOBUSER" ID="cm14">
-			<attribute name="name" value="&amp;JOBUSER - AUD_JOBUSER" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+		<asset class="$IIDR-ColumnMapping" repr="&amp;JOBUSER - AUD_JOBU" ID="cm14">
+			<attribute name="name" value="&amp;JOBUSER - AUD_JOBU" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
-		<asset class="$IIDR-ColumnMapping" repr="&amp;TIMSTAMP - AUD_TIMESTAMP" ID="cm15">
-			<attribute name="name" value="&amp;TIMSTAMP - AUD_TIMESTAMP" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+		<asset class="$IIDR-ColumnMapping" repr="&amp;TIMSTAMP - AUD_TS" ID="cm15">
+			<attribute name="name" value="&amp;TIMSTAMP - AUD_TS" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="&amp;ENTTYP - AUD_ENTTYP" ID="cm16">
 			<attribute name="name" value="&amp;ENTTYP - AUD_ENTTYP" />
-			<reference name="$TableMapping" assetIDs="tm1" />
+			<reference name="$TableMapping" assetIDs="tm4" />
 		</asset>
 		<asset class="$IIDR-ColumnMapping" repr="&amp;CCID - AUD_SCN" ID="cm17">
 			<attribute name="name" value="&amp;CCID - AUD_SCN" />
-			<reference name="$TableMapping" assetIDs="tm1" />
-		</asset>
-		<asset class="$IIDR-ColumnMapping" repr="&amp;LIBRARY - AUD_LIBRARY" ID="cm18">
-			<attribute name="name" value="&amp;LIBRARY - AUD_LIBRARY" />
-			<reference name="$TableMapping" assetIDs="tm1" />
-		</asset>
-		<asset class="$IIDR-ColumnMapping" repr="&amp;OBJECT - AUD_OBJECT" ID="cm19">
-			<attribute name="name" value="&amp;OBJECT - AUD_OBJECT" />
-			<reference name="$TableMapping" assetIDs="tm1" />
-		</asset>
-		<asset class="$IIDR-ColumnMapping" repr="MAX_MONTHLY_CHARGE - DUMMYID" ID="cm20">
-			<attribute name="name" value="MAX_MONTHLY_CHARGE - DUMMYID" />
-			<reference name="$TableMapping" assetIDs="tm3" />
-		</asset>
-		<asset class="$IIDR-ColumnMapping" repr="DURATION_SECS - DUMMYID" ID="cm21">
-			<attribute name="name" value="DURATION_SECS - DUMMYID" />
 			<reference name="$TableMapping" assetIDs="tm4" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="&amp;CNTRRN - AUD_RRN" ID="cm18">
+			<attribute name="name" value="&amp;CNTRRN - AUD_RRN" />
+			<reference name="$TableMapping" assetIDs="tm4" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="PRODUCTID - PRODUCTID" ID="cm19">
+			<attribute name="name" value="PRODUCTID - PRODUCTID" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="DESCRIPTN - DESCRIPTN" ID="cm20">
+			<attribute name="name" value="DESCRIPTN - DESCRIPTN" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="LOCATION - LOCATION" ID="cm21">
+			<attribute name="name" value="LOCATION - LOCATION" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="STATUS - STATUS" ID="cm22">
+			<attribute name="name" value="STATUS - STATUS" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="UNITPRICE - UNITPRICE" ID="cm23">
+			<attribute name="name" value="UNITPRICE - UNITPRICE" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="UNITCOST - UNITCOST" ID="cm24">
+			<attribute name="name" value="UNITCOST - UNITCOST" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="QTYONHAND - QTYONHAND" ID="cm25">
+			<attribute name="name" value="QTYONHAND - QTYONHAND" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="QTYALLOC - QTYALLOC" ID="cm26">
+			<attribute name="name" value="QTYALLOC - QTYALLOC" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="QTYMINORD - QTYMINORD" ID="cm27">
+			<attribute name="name" value="QTYMINORD - QTYMINORD" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="&amp;USER - AUD_USER" ID="cm28">
+			<attribute name="name" value="&amp;USER - AUD_USER" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="&amp;JOBUSER - AUD_JOBU" ID="cm29">
+			<attribute name="name" value="&amp;JOBUSER - AUD_JOBU" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="&amp;TIMSTAMP - AUD_TS" ID="cm30">
+			<attribute name="name" value="&amp;TIMSTAMP - AUD_TS" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="&amp;ENTTYP - AUD_ENTTYP" ID="cm31">
+			<attribute name="name" value="&amp;ENTTYP - AUD_ENTTYP" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="&amp;CCID - AUD_SCN" ID="cm32">
+			<attribute name="name" value="&amp;CCID - AUD_SCN" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="&amp;CNTRRN - AUD_RRN" ID="cm33">
+			<attribute name="name" value="&amp;CNTRRN - AUD_RRN" />
+			<reference name="$TableMapping" assetIDs="tm5" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="REPNO - REPNO" ID="cm34">
+			<attribute name="name" value="REPNO - REPNO" />
+			<reference name="$TableMapping" assetIDs="tm6" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="NAME1ST - NAME1ST" ID="cm35">
+			<attribute name="name" value="NAME1ST - NAME1ST" />
+			<reference name="$TableMapping" assetIDs="tm6" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="NAME2ND - NAME2ND" ID="cm36">
+			<attribute name="name" value="NAME2ND - NAME2ND" />
+			<reference name="$TableMapping" assetIDs="tm6" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="NAME3RD - NAME3RD" ID="cm37">
+			<attribute name="name" value="NAME3RD - NAME3RD" />
+			<reference name="$TableMapping" assetIDs="tm6" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="AMTMTD - AMTMTD" ID="cm38">
+			<attribute name="name" value="AMTMTD - AMTMTD" />
+			<reference name="$TableMapping" assetIDs="tm6" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="AMTYTD - AMTYTD" ID="cm39">
+			<attribute name="name" value="AMTYTD - AMTYTD" />
+			<reference name="$TableMapping" assetIDs="tm6" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="AMTLTD - AMTLTD" ID="cm40">
+			<attribute name="name" value="AMTLTD - AMTLTD" />
+			<reference name="$TableMapping" assetIDs="tm6" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="&amp;USER - AUD_USER" ID="cm41">
+			<attribute name="name" value="&amp;USER - AUD_USER" />
+			<reference name="$TableMapping" assetIDs="tm6" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="&amp;JOBUSER - AUD_JOBU" ID="cm42">
+			<attribute name="name" value="&amp;JOBUSER - AUD_JOBU" />
+			<reference name="$TableMapping" assetIDs="tm6" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="&amp;TIMSTAMP - AUD_TS" ID="cm43">
+			<attribute name="name" value="&amp;TIMSTAMP - AUD_TS" />
+			<reference name="$TableMapping" assetIDs="tm6" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="&amp;ENTTYP - AUD_ENTTYP" ID="cm44">
+			<attribute name="name" value="&amp;ENTTYP - AUD_ENTTYP" />
+			<reference name="$TableMapping" assetIDs="tm6" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="&amp;CCID - AUD_SCN" ID="cm45">
+			<attribute name="name" value="&amp;CCID - AUD_SCN" />
+			<reference name="$TableMapping" assetIDs="tm6" />
+		</asset>
+		<asset class="$IIDR-ColumnMapping" repr="&amp;CNTRRN - AUD_RRN" ID="cm46">
+			<attribute name="name" value="&amp;CNTRRN - AUD_RRN" />
+			<reference name="$TableMapping" assetIDs="tm6" />
 		</asset>
 	</assets>
 	<flowUnits>
+		<flowUnit assetID="tm1" flowType="DESIGN">
+			<flow sourceIDs="tbl1" targetIDs="tm1"/>
+			<flow sourceIDs="tm1" targetIDs="file1"/>
+		</flowUnit>
 		<flowUnit assetID="tm2" flowType="DESIGN">
-			<flow sourceIDs="tm2" targetIDs="file1"/>
+			<flow sourceIDs="tbl2" targetIDs="tm2"/>
+			<flow sourceIDs="tm2" targetIDs="file2"/>
+		</flowUnit>
+		<flowUnit assetID="tm3" flowType="DESIGN">
+			<flow sourceIDs="tbl3" targetIDs="tm3"/>
+			<flow sourceIDs="tm3" targetIDs="file3"/>
 		</flowUnit>
 		<flowUnit assetID="cm1" flowType="DESIGN">
 			<flow sourceIDs="cm1" targetIDs="col1"/>
@@ -415,6 +742,106 @@
 		<flowUnit assetID="cm21" flowType="DESIGN">
 			<flow sourceIDs="cm21" targetIDs="col41"/>
 			<flow sourceIDs="col42" targetIDs="cm21"/>
+		</flowUnit>
+		<flowUnit assetID="cm22" flowType="DESIGN">
+			<flow sourceIDs="cm22" targetIDs="col43"/>
+			<flow sourceIDs="col44" targetIDs="cm22"/>
+		</flowUnit>
+		<flowUnit assetID="cm23" flowType="DESIGN">
+			<flow sourceIDs="cm23" targetIDs="col45"/>
+			<flow sourceIDs="col46" targetIDs="cm23"/>
+		</flowUnit>
+		<flowUnit assetID="cm24" flowType="DESIGN">
+			<flow sourceIDs="cm24" targetIDs="col47"/>
+			<flow sourceIDs="col48" targetIDs="cm24"/>
+		</flowUnit>
+		<flowUnit assetID="cm25" flowType="DESIGN">
+			<flow sourceIDs="cm25" targetIDs="col49"/>
+			<flow sourceIDs="col50" targetIDs="cm25"/>
+		</flowUnit>
+		<flowUnit assetID="cm26" flowType="DESIGN">
+			<flow sourceIDs="cm26" targetIDs="col51"/>
+			<flow sourceIDs="col52" targetIDs="cm26"/>
+		</flowUnit>
+		<flowUnit assetID="cm27" flowType="DESIGN">
+			<flow sourceIDs="cm27" targetIDs="col53"/>
+			<flow sourceIDs="col54" targetIDs="cm27"/>
+		</flowUnit>
+		<flowUnit assetID="cm28" flowType="DESIGN">
+			<flow sourceIDs="cm28" targetIDs="col55"/>
+			<flow sourceIDs="col56" targetIDs="cm28"/>
+		</flowUnit>
+		<flowUnit assetID="cm29" flowType="DESIGN">
+			<flow sourceIDs="cm29" targetIDs="col57"/>
+			<flow sourceIDs="col58" targetIDs="cm29"/>
+		</flowUnit>
+		<flowUnit assetID="cm30" flowType="DESIGN">
+			<flow sourceIDs="cm30" targetIDs="col59"/>
+			<flow sourceIDs="col60" targetIDs="cm30"/>
+		</flowUnit>
+		<flowUnit assetID="cm31" flowType="DESIGN">
+			<flow sourceIDs="cm31" targetIDs="col61"/>
+			<flow sourceIDs="col62" targetIDs="cm31"/>
+		</flowUnit>
+		<flowUnit assetID="cm32" flowType="DESIGN">
+			<flow sourceIDs="cm32" targetIDs="col63"/>
+			<flow sourceIDs="col64" targetIDs="cm32"/>
+		</flowUnit>
+		<flowUnit assetID="cm33" flowType="DESIGN">
+			<flow sourceIDs="cm33" targetIDs="col65"/>
+			<flow sourceIDs="col66" targetIDs="cm33"/>
+		</flowUnit>
+		<flowUnit assetID="cm34" flowType="DESIGN">
+			<flow sourceIDs="cm34" targetIDs="col67"/>
+			<flow sourceIDs="col68" targetIDs="cm34"/>
+		</flowUnit>
+		<flowUnit assetID="cm35" flowType="DESIGN">
+			<flow sourceIDs="cm35" targetIDs="col69"/>
+			<flow sourceIDs="col70" targetIDs="cm35"/>
+		</flowUnit>
+		<flowUnit assetID="cm36" flowType="DESIGN">
+			<flow sourceIDs="cm36" targetIDs="col71"/>
+			<flow sourceIDs="col72" targetIDs="cm36"/>
+		</flowUnit>
+		<flowUnit assetID="cm37" flowType="DESIGN">
+			<flow sourceIDs="cm37" targetIDs="col73"/>
+			<flow sourceIDs="col74" targetIDs="cm37"/>
+		</flowUnit>
+		<flowUnit assetID="cm38" flowType="DESIGN">
+			<flow sourceIDs="cm38" targetIDs="col75"/>
+			<flow sourceIDs="col76" targetIDs="cm38"/>
+		</flowUnit>
+		<flowUnit assetID="cm39" flowType="DESIGN">
+			<flow sourceIDs="cm39" targetIDs="col77"/>
+			<flow sourceIDs="col78" targetIDs="cm39"/>
+		</flowUnit>
+		<flowUnit assetID="cm40" flowType="DESIGN">
+			<flow sourceIDs="cm40" targetIDs="col79"/>
+			<flow sourceIDs="col80" targetIDs="cm40"/>
+		</flowUnit>
+		<flowUnit assetID="cm41" flowType="DESIGN">
+			<flow sourceIDs="cm41" targetIDs="col81"/>
+			<flow sourceIDs="col82" targetIDs="cm41"/>
+		</flowUnit>
+		<flowUnit assetID="cm42" flowType="DESIGN">
+			<flow sourceIDs="cm42" targetIDs="col83"/>
+			<flow sourceIDs="col84" targetIDs="cm42"/>
+		</flowUnit>
+		<flowUnit assetID="cm43" flowType="DESIGN">
+			<flow sourceIDs="cm43" targetIDs="col85"/>
+			<flow sourceIDs="col86" targetIDs="cm43"/>
+		</flowUnit>
+		<flowUnit assetID="cm44" flowType="DESIGN">
+			<flow sourceIDs="cm44" targetIDs="col87"/>
+			<flow sourceIDs="col88" targetIDs="cm44"/>
+		</flowUnit>
+		<flowUnit assetID="cm45" flowType="DESIGN">
+			<flow sourceIDs="cm45" targetIDs="col89"/>
+			<flow sourceIDs="col90" targetIDs="cm45"/>
+		</flowUnit>
+		<flowUnit assetID="cm46" flowType="DESIGN">
+			<flow sourceIDs="cm46" targetIDs="col91"/>
+			<flow sourceIDs="col92" targetIDs="cm46"/>
 		</flowUnit>
 	</flowUnits>
 </doc>

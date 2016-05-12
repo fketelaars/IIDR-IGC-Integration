@@ -14,7 +14,12 @@ The GitHub repository contains all components required to run the ExportMetadata
 Download and unzip the master zip file from GitHub through the following link: [Download Zip](https://github.com/fketelaars/IIDR-IGC-Integration/archive/master.zip).
 
 ## Configuration
-In most situations, you will only need to update the `conf/ExportMetadata.properties` file. Edit the file with your favourite editor and set the properties to reflect your environment. At a minimum, set the following properties:
+In most scenarios you will need to perform two configuration tasks:
+- Update the configuration properties
+- Review the datastores and specify the database name
+
+### Setting the configuration properties
+Update the `conf/ExportMetadata.properties` file with your favourite editor and set the properties to reflect your environment. At a minimum, set the following properties:
 * CDC\_AS\_HOME: Home (main) directory of the Access Server or Management Console. This directory must have a `lib` subdirectory that holds the CHCCLP jar files and a directory with the Java Runtime Engine that will be used for the utility. If your directory path contains blanks or other special characters, please enclose the path in double quotes (").
 * asHostName: Host name or IP address of the server running the Access Server.
 * asUserName: User name to connect to the Access Server.
@@ -23,11 +28,20 @@ In most situations, you will only need to update the `conf/ExportMetadata.proper
 * isUserName: User name to connect to the Information Governance Catalog REST interface.
 * isPassword: Password for the IGC. Please specify the password in its readable format; when the utility runs it will automatically encrypt the password and update the property.
 
+### Review the datastores and specify the database name
+When registering table assets in the Information Governance Catalog, you must specify the hostname, database name, schema name and table name. In most cases the hostname specified in the datastore definition will reflect the server that runs the database, but the datastore does not expose the name of the database.
+
+If the name of the database matches the name of the datastore, you don't need to do anything. However, to overrule the name of the database, specify the name in the datastore description, prefixing it with "DATABASE:" or "DB:". Example:
+
+ ![Datastore database](docs/images/Datastore_Database.PNG)
+ 
+
 ## Usage
 Once the tool has been configured, you can perform the export of the metadata using the shell/command script that is provided in the utility's home directory.
 
-Linux/Unix: `ExportMetadata.sh -ds <source datastore> [-s subscription(s)] [-p] [-ub] [-xp] [-d]`
-Windows: `ExportMetadata.cmd -ds <source datastore> [-s subscription(s)] [-p] [-ub] [-xp] [-d]`
+* Linux/Unix: `ExportMetadata.sh -ds <source datastore> [-s subscription(s)] [-p] [-ub] [-xp] [-d]`
+
+* Windows: `ExportMetadata.cmd -ds <source datastore> [-s subscription(s)] [-p] [-ub] [-xp] [-d]`
 
 ### Parameters
 - ds: Specifies the source datastore of the subscriptons you wish to export.
@@ -59,3 +73,30 @@ The replicated tables in each of the subscriptions:
 ![DB2_AUD subscription](docs/images/Replication_TM_DB2_AUD.PNG)
 
 ![AUD_FF subscription](docs/images/Replication_TM_AUD_FF.PNG)
+
+In the above configuration, we need to collect metadata for 2 source datastores, CDC\_Oracle\_cdcdemoa and CDC\_DB2. For the CDC\_Oracle\_cdcdemoa datastore, the utility will collect the definition of 1 subscription; for the CDC\_DB2 datastore, it will collect metadata for 2 subscriptions, one replicating to the same target and one replicating to flat files.
+
+The commands to be run are:
+`ExportMetadata.sh -ds CDC_Oracle_cdcdemoa`
+
+and
+
+`ExportMetadata.sh -ds CDC_DB2`
+
+Here is an example of the output generated when run for the CDC\_DB2 datastore.
+
+    2016-05-12 19:12:55 INFO  Version: 1.0.28, date: 2016-05-12_10.18.45_CEST
+    2016-05-12 19:12:56 INFO  Connecting to Access Server at host name tirnanog and port 10101
+    2016-05-12 19:12:56 INFO  Listing subscriptions for datastore CDC_DB2
+    2016-05-12 19:12:59 INFO  Getting rule sets for subscription DB2_AUD
+    2016-05-12 19:12:59 INFO  Posting assets to Information Governance Catalog on troia
+    2016-05-12 19:13:00 INFO  Posting flows to Information Governance Catalog on troia
+    2016-05-12 19:13:00 INFO  Finished exporting the CDC metadata
+
+And this is the resulting lineage.
+
+![End to end lineage](docs/images/IGC_Lineage.png)
+
+
+
+

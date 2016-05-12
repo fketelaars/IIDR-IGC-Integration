@@ -371,7 +371,8 @@ public class ExportMetadata {
 			// args = "-p preview.txt -ds TESTDB,ORCL".split(" ");
 			// args = "-d -ub -p preview.txt -ds CDC_Oracle_cdcdemoa -sub
 			// SARC".split(" ");
-			args = "-d -ds CDC_DB2".split(" ");
+			args = "-ds CDC_DB2".split(" ");
+//			args = "-d -ds CDC_Oracle_cdcdemoa".split(" ");
 			// args = " -ds TESTDB -p".split(" ");
 		}
 		try {
