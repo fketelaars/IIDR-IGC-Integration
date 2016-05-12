@@ -2,14 +2,12 @@
 
 rem Get directory of script running
 set SCRIPT_DIR=%~dp0
-echo %SCRIPT_DIR%
 
 rem Read conf/ExportMetadata.properties for Access Server home  
 FOR /F "tokens=1,2 delims==" %%G IN (%SCRIPT_DIR%\conf\ExportMetadata.properties) DO (set %%G=%%H)  
 
 rem Set Java executable
 set JAVA=%CDC_AS_HOME%\jre32\jre\bin\java.exe
-echo %JAVA%
 
-%JAVA% -cp "%SCRIPT_DIR%\lib\*;%CDC_AS_HOME%\lib\*:%SCRIPT_DIR%\lib\downloaded\*" 
-com.ibm.replication.iidr.metadata.ExportMetadata %*
+
+%JAVA% -classpath %SCRIPT_DIR%\lib\*;%CDC_AS_HOME%\lib\*;%SCRIPT_DIR%\lib\downloaded\* com.ibm.replication.iidr.metadata.ExportMetadata %*

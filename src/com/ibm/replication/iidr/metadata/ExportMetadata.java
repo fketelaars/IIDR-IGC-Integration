@@ -211,14 +211,18 @@ public class ExportMetadata {
 			ResultStringTable subscriptionsTable = (ResultStringTable) script.getResult();
 			// For every directly mapped table, list the column mappings
 			for (int tableRow = 0; tableRow < subscriptionsTable.getRowCount(); tableRow++) {
-				subscriptionNames.add(subscriptionsTable.getValueAt(tableRow, "SUBSCRIPTION"));
+				// Only add the subscriptions which have the specified datastore
+				// as its source
+				if (subscriptionsTable.getValueAt(tableRow, "SOURCE DATASTORE").equals(sourceDatastore.getName())) {
+					subscriptionNames.add(subscriptionsTable.getValueAt(tableRow, "SUBSCRIPTION"));
+				}
 			}
 		} else {
 			subscriptionNames = new ArrayList<String>(Arrays.asList(parms.subscription.split(",", -1)));
 		}
 		// Now get details for all selected subscriptions
 		for (String subscriptionName : subscriptionNames) {
-			logger.debug(
+			logger.info(
 					MessageFormat.format("Getting details for subscription {0}", new Object[] { subscriptionName }));
 			try {
 				script.execute(MessageFormat.format("show subscription name {0}", new Object[] { subscriptionName }));
@@ -372,7 +376,7 @@ public class ExportMetadata {
 			// args = "-d -ub -p preview.txt -ds CDC_Oracle_cdcdemoa -sub
 			// SARC".split(" ");
 			args = "-ds CDC_DB2".split(" ");
-//			args = "-d -ds CDC_Oracle_cdcdemoa".split(" ");
+			// args = "-d -ds CDC_Oracle_cdcdemoa".split(" ");
 			// args = " -ds TESTDB -p".split(" ");
 		}
 		try {
