@@ -9,7 +9,7 @@ IBM's InfoSphere Information Governance Catalog provides integration capabilitie
 This toolkit integrates the InfoSphere Data Replication CDC (CDC) metadata with the InfoSphere Information Governance Catalog. Data assets like source and target database tables and their columns are pushed to the catalog, along with information about the CDC subscription that replicates the tables. CDC metadata is extracted using the CHCCLP API that is provided as part of CDC's Management Console and Access Server and then the OpenIGC REST API is utilized to update the IGC assets.
 
 ## Installation
-The GitHub repository contains all components required to run the ExportMetadata utility it their compiled form, including the Apache Commons and Log4J jar files. Besides the CDC Access Server or CDC Management Console, no further programs are needed. If you wish to use different versions of the included Apache projects, please refer to the *Compilation* section.
+The GitHub repository contains all components required to run the ExportMetadata utility it their compiled form, including the Apache Commons and Log4J jar files. Besides the CDC Access Server or CDC Management Console, no further programs are needed. If you wish to use different versions of the included Apache projects, please refer to the [Compilation](#compilation) section.
 
 Download and unzip the master zip file from GitHub through the following link: [Download Zip](https://github.com/fketelaars/IIDR-IGC-Integration/archive/master.zip).
 
@@ -96,6 +96,20 @@ Here is an example of the output generated when run for the CDC\_DB2 datastore.
 And this is the resulting lineage.
 
 ![End to end lineage](docs/images/IGC_Lineage.png)
+
+## Compilation
+If you wish to build the tookit yourself, the easiest method is to use Ant ([https://ant.apache.org/bindownload.cgi](https://ant.apache.org/bindownload.cgi)). 
+
+
+Once you have this installed:
+- Optionally, download new versions of the Apache libraries which are included under `opt/downloaded`
+- Ensure that the ant executable is in the path
+- Go to the directory where you unzipped the user exit master file
+- Update the `CDC_AS_HOME` property in the `ExportMetadata.properties` file to match the location where you installed the CDC Access Server
+- Run `ant`
+- First the sources will be compiled into their respective .class files and finally the class files are packaged into a jar 
+
+
 
 
 
