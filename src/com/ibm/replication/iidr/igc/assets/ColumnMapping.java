@@ -20,20 +20,26 @@ public class ColumnMapping {
 	
 	public ColumnMapping (String id, String source_column, String target_column, String initial_value, String parent_id) {
 		this.id = id;
-		this.source_column = source_column;
-		this.target_column = target_column;
+		
 		this.initial_value = initial_value;
+		
+		if (source_column.isEmpty()) {
+			this.source_column = "<" + this.initial_value + ">";
+		} else {
+			this.source_column = source_column;
+		}
+		
+		this.target_column = target_column;
+		
 		this.parent_id = parent_id;
 	}
 	
 	public String toXML() {
 		
-		StringEscapeUtils.escapeXml("sdfsdf");
-		
 		return MessageFormat.format("\t\t<asset class=\"{5}\" repr=\"{0} - {1}\" ID=\"{2}\">\n" +
 			"\t\t\t<attribute name=\"name\" value=\"{0} - {1}\" />\n" +
-			"\t\t\t<attribute name=\"short_description\" value=\"Column mapping from {0} {1}\" />\n" +
-			"\t\t\t<attribute name=\"long_description\" value=\"Column mapping from {0} {1}\" />\n" +
+			"\t\t\t<attribute name=\"short_description\" value=\"Column mapping from {0} to {1}\" />\n" +
+			"\t\t\t<attribute name=\"long_description\" value=\"Column mapping from {0} to {1}\" />\n" +
 			"\t\t\t<attribute name=\"$source_column\" value=\"{0}\" />\n" +
 			"\t\t\t<attribute name=\"$target_column\" value=\"{1}\" />\n" + 
 			"\t\t\t<attribute name=\"$initial_value\" value=\"{3}\" />\n" +

@@ -632,7 +632,7 @@ public class Flows {
 			for (DataFile dataFile : this.dataFiles) {
 				if (dataFile.getTableMappingID().equalsIgnoreCase(tableMapping.getID())) {
 					flowXML += MessageFormat.format("\t\t\t<flow sourceIDs=\"{0}\" targetIDs=\"{1}\"/>\n", 
-							new Object[] {tableMapping.getID(), dataFile.getID()});
+							new Object[] {tableMapping.getID(), dataFile.getRecordID()});
 					break;
 				}
 			}
