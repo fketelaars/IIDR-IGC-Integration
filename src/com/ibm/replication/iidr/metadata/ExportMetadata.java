@@ -93,11 +93,11 @@ public class ExportMetadata {
 		// Collect the metadata
 		collectMetadata();
 
-		Utils.writeContentToFile(settings.defaultDataPath + File.separator + parms.datastore + "_subscription.xml",
+		Utils.writeContentToFile(settings.defaultDataPath + File.separator + parms.datastore + "_assets.xml",
 				assets.toXML());
 
 		flows = new Flows(assets);
-		Utils.writeContentToFile(settings.defaultDataPath + File.separator + parms.datastore + "_subscription_flow.xml",
+		Utils.writeContentToFile(settings.defaultDataPath + File.separator + parms.datastore + "_flow.xml",
 				flows.toXML());
 
 		if (!parms.previewOnly) {
