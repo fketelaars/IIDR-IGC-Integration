@@ -9,9 +9,17 @@ IBM's InfoSphere Information Governance Catalog provides integration capabilitie
 This toolkit integrates the InfoSphere Data Replication CDC (CDC) metadata with the InfoSphere Information Governance Catalog. Data assets like source and target database tables and their columns are pushed to the catalog, along with information about the CDC subscription that replicates the tables. CDC metadata is extracted using the CHCCLP API that is provided as part of CDC's Management Console and Access Server and then the OpenIGC REST API is utilized to update the IGC assets.
 
 ## Installation
-The GitHub repository contains all components required to run the ExportMetadata utility it their compiled form, including the Apache Commons and Log4J jar files. Besides the CDC Access Server or CDC Management Console, no further programs are needed. If you wish to use different versions of the included Apache projects, please refer to the [Compilation](#compilation) section.
+The GitHub repository contains all components required to run the ExportMetadata utility, including the Apache Commons and Log4j jar files. Besides the CDC Access Server or CDC Management Console, no further programs are needed. Classes have been compiled with Java 1.8, the version that comes with CDC Access Server 11.3.3. 
+
+If you wish to use different versions of the included Apache projects, or use it with an older version of the CDC Access Server, please refer to the [Compilation](#compilation) section.
 
 Download and unzip the master zip file from GitHub through the following link: [Download Zip](https://github.com/fketelaars/IIDR-IGC-Integration/archive/master.zip).
+
+### Required software versions
+There is a strong dependency of the CDC-IGC metadata integration utility on CDC Access Server (or Management Console) and the Information Governance Catalog. At a minimum, the following versions are required:
+- CDC Engines: 10.2.0 and above (CHCCLP must be supported)
+- CDC Access Server (or Management Console): 10.2.0 and higher (CHCCLP must be supported)
+- Information Governance Catalog: 11.3 RU 16 and higher
 
 ## Configuration
 In most scenarios you will need to perform two configuration tasks:
