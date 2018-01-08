@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<doc xmlns="http://www.ibm.com/iis/flow-doc">
+	<assets>
+		<asset class="$IIDR-Datastore" repr="CDC_DB2" ID="ds1">
+			<attribute name="name" value="CDC_DB2" />
+			<attribute name="short_description" value="" />
+			<attribute name="long_description" value="" />
+			<attribute name="$host" value="IIDR-CDC.DEMOS.DEMOIBM.COM" />
+			<attribute name="$port" value="10901" />
+			<attribute name="$version" value="V11R4M0T0BIDR_Release_5040" />
+			<attribute name="$platform" value="Java VM" />
+			<attribute name="$database" value="DB2 for LUW" />
+			<attribute name="$type" value="Dual" />
+		</asset>
+		<asset class="$IIDR-Datastore" repr="CDC_Kafka" ID="ds2">
+			<attribute name="name" value="CDC_Kafka" />
+			<attribute name="short_description" value="" />
+			<attribute name="long_description" value="" />
+			<attribute name="$host" value="IIDR-CDC.DEMOS.DEMOIBM.COM" />
+			<attribute name="$port" value="11701" />
+			<attribute name="$version" value="V11R4M0T0BIDR_Release_5045" />
+			<attribute name="$platform" value="Java VM" />
+			<attribute name="$database" value="Kafka" />
+			<attribute name="$type" value="Target" />
+		</asset>
+		<asset class="$IIDR-Subscription" repr="DB" ID="sub1">
+			<attribute name="name" value="DB" />
+			<attribute name="short_description" value="" />
+			<attribute name="long_description" value="" />
+			<attribute name="$source_datastore" value="CDC_DB2" />
+			<attribute name="$target_datastore" value="CDC_KAFKA" />
+			<attribute name="$source_id" value="DB" />
+			<attribute name="$tcp_host" value="AUTO SELECT" />
+			<attribute name="$firewall_port" value="" />
+			<attribute name="$persistency" value="false" />
+			<reference name="$Datastore" assetIDs="ds1" />
+		</asset>
+		<asset class="$IIDR-Subscription" repr="DB2TOKAFKA" ID="sub2">
+			<attribute name="name" value="DB2TOKAFKA" />
+			<attribute name="short_description" value="" />
+			<attribute name="long_description" value="" />
+			<attribute name="$source_datastore" value="CDC_DB2" />
+			<attribute name="$target_datastore" value="CDC_KAFKA" />
+			<attribute name="$source_id" value="DB2TOKAF" />
+			<attribute name="$tcp_host" value="AUTO SELECT" />
+			<attribute name="$firewall_port" value="" />
+			<attribute name="$persistency" value="false" />
+			<reference name="$Datastore" assetIDs="ds1" />
+		</asset>
+		<asset class="$IIDR-TableMapping" repr="CDCDEMO.DB001 - null" ID="tm1">
+			<attribute name="name" value="CDCDEMO.DB001 - null" />
+			<attribute name="short_description" value="Table mapping from CDCDEMO.DB001 to null" />
+			<attribute name="long_description" value="Table mapping from CDCDEMO.DB001 to null" />
+			<attribute name="$source" value="CDCDEMO.DB001" />
+			<attribute name="$target" value="null" />
+			<attribute name="$mapping_type" value="Avro JSON" />
+			<attribute name="$method" value="Mirror" />
+			<attribute name="$prevent_recursion" value="false" />
+			<reference name="$Subscription" assetIDs="sub1" />
+		</asset>
+	</assets>
+	<importAction partialAssetIDs="ds1 ds2 " />
+</doc>

@@ -50,6 +50,7 @@ public class ExportMetadata {
 	final static int ERR_DATASTORES_NOT_SAME_TYPE = -2233;
 
 	final private static String DATASTORE_TYPE_DATASTAGE = "IBM InfoSphere DataStage";
+	final private static String DATASTORE_TYPE_KAFKA = "Kafka";
 
 	static Logger logger;
 
@@ -269,13 +270,13 @@ public class ExportMetadata {
 		// If the target datastore is InfoSphere DataStage, add table assets
 		// targeting flat files
 
-		logger.debug(MessageFormat.format("Target datastore for subscription {0} is {1}. Type of datastore is {2}",
-				new Object[] { subscription.getName(), subscription.getTargetDatastoreName(),
-						assets.getDatastoreByID(subscription.getTargetDatastoreID()).getDatabase() }));
+		String dataStoreType = assets.getDatastoreByID(subscription.getTargetDatastoreID()).getDatabase();
 
-		if (assets.getDatastoreByID(subscription.getTargetDatastoreID()).getDatabase()
-				.equals(DATASTORE_TYPE_DATASTAGE)) {
-			logger.debug(MessageFormat.format("Collecing DataStage table mappings for subscription {0}",
+		logger.debug(MessageFormat.format("Target datastore for subscription {0} is {1}. Type of datastore is {2}",
+				new Object[] { subscription.getName(), subscription.getTargetDatastoreName(), dataStoreType }));
+
+		if (dataStoreType.equals(DATASTORE_TYPE_DATASTAGE) || dataStoreType.equals(DATASTORE_TYPE_KAFKA)) {
+			logger.debug(MessageFormat.format("Collecting " + dataStoreType + " table mappings for subscription {0}",
 					new Object[] { subscription.getName() }));
 			script.execute(
 					MessageFormat.format("list table mappings name {0}", new Object[] { subscription.getName() }));

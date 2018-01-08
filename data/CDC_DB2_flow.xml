@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<doc xmlns="http://www.ibm.com/iis/flow-doc">
+	<assets>
+		<asset class="host" repr="IIDR-CDC.DEMOS.DEMOIBM.COM" ID="host1">
+			<attribute name="name" value="IIDR-CDC.DEMOS.DEMOIBM.COM"/>
+		</asset>
+		<asset class="database" repr="CDC_DB2" ID="db1">
+			<attribute name="name" value="CDC_DB2"/>
+			<reference name="host" assetIDs="host1"/>
+		</asset>
+		<asset class="database" repr="CDC_Kafka" ID="db2">
+			<attribute name="name" value="CDC_Kafka"/>
+			<reference name="host" assetIDs="host1"/>
+		</asset>
+		<asset class="database_schema" repr="CDCDEMO" ID="schm1"  matchByName="true">
+			<attribute name="name" value="CDCDEMO"/>
+			<reference name="database" assetIDs="db1"/>
+		</asset>
+		<asset class="database_table" repr="DB001" ID="tbl1"  matchByName="true">
+			<attribute name="name" value="DB001"/>
+			<reference name="database_schema" assetIDs="schm1"/>
+		</asset>
+		<asset class="data_file" repr="DB001.txt" ID="file1">
+			<attribute name="name" value="DB001.txt"/>
+			<attribute name="path" tag="true" value="null"/>
+			<reference name="parent_folder_or_host" assetIDs="host1"/>
+		</asset>
+		<asset class="data_file_record" repr="DB001" ID="file1fr">
+			<attribute name="name" value="DB001"/>
+			<reference name="data_file" assetIDs="file1"/>
+		</asset>
+		<asset class="$IIDR-Datastore" repr="CDC_DB2" ID="ds1">
+			<attribute name="name" value="CDC_DB2" />
+		</asset>
+		<asset class="$IIDR-Datastore" repr="CDC_Kafka" ID="ds2">
+			<attribute name="name" value="CDC_Kafka" />
+		</asset>
+		<asset class="$IIDR-Subscription" repr="DB" ID="sub1">
+			<attribute name="name" value="DB" />
+			<reference name="$Datastore" assetIDs="ds1" />
+		</asset>
+		<asset class="$IIDR-Subscription" repr="DB2TOKAFKA" ID="sub2">
+			<attribute name="name" value="DB2TOKAFKA" />
+			<reference name="$Datastore" assetIDs="ds1" />
+		</asset>
+		<asset class="$IIDR-TableMapping" repr="CDCDEMO.DB001 - null" ID="tm1">
+			<attribute name="name" value="CDCDEMO.DB001 - null" />
+			<reference name="$Subscription" assetIDs="sub1" />
+		</asset>
+	</assets>
+	<flowUnits>
+		<flowUnit assetID="tm1" flowType="DESIGN">
+			<flow sourceIDs="tbl1" targetIDs="tm1"/>
+			<flow sourceIDs="tm1" targetIDs="file1fr"/>
+		</flowUnit>
+	</flowUnits>
+</doc>
